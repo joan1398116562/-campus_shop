@@ -4,6 +4,8 @@
 from flask import Flask
 # from flask_bootstrap import Bootstrap
 
+from flask_admin import Admin, BaseView, expose
+
 app = Flask(__name__)
 # Bootstrap(app)
 

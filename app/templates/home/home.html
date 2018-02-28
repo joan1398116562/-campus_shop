@@ -6,6 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
     <title>校园商铺系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap-movie.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap-theme.css')}}">
@@ -39,7 +40,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="index.html" class="navbar-brand" style="width:250px;">
-                <img src="{{ url_for('static', filename='base/images/shop.png')}}">&nbsp;校园商铺系统
+                <img src="{{ url_for('static', filename='base/images/shop.png')}}", style="height: 30px">&nbsp;校园商铺系统
             </a>
         </div>
       <!--导航按钮和logo适应移动设备-->
@@ -94,12 +95,12 @@
     </div>
 </footer>
 <!--底部-->
-<script src="{{ url_for('static', filename='base/js/jquery.min.js')}}"></script>
+<script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js')}}"></script>
 <script src="{{ url_for('static', filename='base/js/bootstrap.min.js')}}"></script>
 <script src="{{ url_for('static', filename='base/js/jquery.singlePageNav.min.js')}}"></script>
 <script src="{{ url_for('static', filename='base/js/wow.min.js')}}"></script>
 <script src="{{ url_for('static', filename='lazyload/jquery.lazyload.min.js')}}"></script>
-<script src="//cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>
+<script src="{{ url_for('static', filename='holder.min.js')}}"></script>
 {#<script>#}
 {#    $(function() {#}
 {#        new WOW().init();#}
