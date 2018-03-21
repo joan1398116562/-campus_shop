@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_script import Manager
+from flask_migrate import Migrate, MigrateCommand
 
 
 # 实例化app
@@ -9,6 +11,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:177036@127.0.0.1:3306/shop
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
 
 
 class User(db.Model):
@@ -19,7 +25,7 @@ class User(db.Model):
     # 昵称
     name = db.Column(db.String(100), unique=True)
     # 密码字段
-    pwd = db.Column(db.String(100))
+    password = db.Column(db.String(100))
     # 邮箱
     email = db.Column(db.String(100), unique=True)
     # 手机
@@ -92,6 +98,36 @@ class Comment(db.Model):
 
     def __repr__(self):
         return "<Comment %r>" % self.id
+
+
+class AdminUser(db.Model):
+    """
+    管理员
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True)
+    login = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120))
+    password = db.Column(db.String(6000))
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def __repr__(self):
+        return "<Administrator %r>" % self.name
+
+
+if __name__ == '__main__':
+    manager.run()
 
 
 

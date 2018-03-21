@@ -6,6 +6,8 @@
     <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
     <title>校园商铺系统</title>
+{#  添加Favicon #}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap-movie.css')}}">
@@ -42,7 +44,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="index.html" class="navbar-brand" style="width:250px;">
+            <a href="index.html"
+               class="navbar-brand" style="width:250px;">
                 <img src="{{ url_for('static', filename='base/images/shop.png')}}", style="height: 30px">&nbsp;校园商铺系统
             </a>
         </div>
@@ -59,16 +62,16 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a class="curlink" href="index.html"><span class="glyphicon glyphicon-film"></span>&nbsp;分类</a>
+                    <a class="curlink" href="index.html"><span class="fas fa-certificate"></span>&nbsp;分类</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.login') }}"><span class="glyphicon glyphicon-log-in"></span>&nbsp;登录</a>
+                    <a class="curlink" href="{{ url_for('home.login') }}"><span class="fas fa-sign-in-alt"></span>&nbsp;登录</a>
                 </li>
                 <li>
-                    <a class="curlink" href="{{ url_for('home.register') }}"><span class="glyphicon glyphicon-plus"></span>&nbsp;注册</a>
+                    <a class="curlink" href="{{ url_for('home.register') }}"><span class="fas fa-plus"></span>&nbsp;注册</a>
                 </li>
                 <li>
-                    <a class="curlink" href="user.html"><span class="glyphicon glyphicon-user"></span>&nbsp;用户</a>
+                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="fas fa-user"></span>&nbsp;用户</a>
                 </li>
             </ul>
         </div>

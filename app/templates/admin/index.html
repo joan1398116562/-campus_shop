@@ -1,0 +1,45 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{{ super() }}
+<div class="jumbotron">
+    <div>
+        {% if current_user.is_authenticated %}
+        <h1 class="center-block">校园商铺管理系统</h1>
+        <p class="text-success">
+            欢迎进入校园商铺后台管理系统
+        </p>
+        {% else %}
+        <form method="POST" action="">
+            {{ form.hidden_tag() if form.hidden_tag }}
+            {% for f in form if f.type != 'CSRFTokenField' %}
+            <div>
+            {{ f.label }}
+            {{ f }}
+            {% if f.errors %}
+            <ul>
+                {% for e in f.errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+            {% endfor %}
+            <button class="btn" type="submit">确认</button>
+        </form>
+        {{ link | safe }}
+        {% endif %}
+    </div>
+    <div class="progress">
+  <div class="progress-bar progress-bar-success progress-bar-striped active" style="width: 34%">
+    <span class="sr-only"></span>
+  </div>
+  <div class="progress-bar progress-bar-warning progress-bar-striped active" style="width: 33%">
+    <span class="sr-only"></span>
+  </div>
+  <div class="progress-bar progress-bar-danger progress-bar-striped active" style="width: 33%">
+    <span class="sr-only"></span>
+  </div>
+    </div>
+    <a class="btn btn-primary btn-lg active" href="/"><i class="fas fa-check"></i>返回</a>
+</div>
+{% endblock body %}
