@@ -4,6 +4,7 @@
 import os
 import os.path as op
 
+from flask_admin.model import BaseModelView
 from jinja2 import Markup
 
 from flask import Flask, render_template, url_for, redirect, request, abort, flash
@@ -26,7 +27,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.models import db
 from models import User, Product, Tag, Comment, AdminUser
-from home.forms import AdminLoginForm ,RegistrationForm
+from home.forms import AdminLoginForm, RegistrationForm
 
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")  # 上传文件路径
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -47,6 +48,8 @@ app.config.from_object('config')
 """
 flask-login
 """
+
+
 # 初始化flask-login
 
 
@@ -59,10 +62,30 @@ def init_login():
     def load_user(adminuser_id):
         return db.session.query(AdminUser).get(adminuser_id)
 
+
 # 创建定制的model view class
 
 
 class MyModelView(sqla.ModelView):
+    """
+    管理员视图并集成了flask-login的认证系统
+    """
+    can_create = False
+    can_edit = False
+    can_delete = False
+
+    column_labels = {
+        'id': u'编号',
+        'name': u'昵称',
+        'login': u'登录名',
+        'email': u'邮箱',
+        'password': u'密码'
+    }
+
+    column_exclude_list = ['name', 'password']   # 隐藏管理员密码字段
+
+    column_filters = ['login', 'email']
+
     def is_accessible(self):
         return login.current_user.is_authenticated
 
@@ -128,27 +151,54 @@ class MyAdminIndexView(admin.AdminIndexView):
 # 初始化flask_login
 init_login()
 
-
 """
 flask-admin
 """
 
-admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3',
-                   index_view=MyAdminIndexView(), base_template='my_master.html')
 
-admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
+class UserAdmin(sqla.ModelView):
+    """
+    用户管理视图
+    """
+    can_create = False
+    can_edit = False
+    can_delete = False
+    column_labels = {
+        'name': u'昵称',
+        'password': u'密码',
+        'email': u'邮箱',
+        'phone': u'手机号',
+        'card': u'银行卡',
+        'face': u'头像',
+        'address': u'收货地址',
+        'add_time': u'添加时间',
+        'comments': u'评论'
+    }
 
-admin.add_view(ModelView(User, db.session, name=u'用户管理'))
-admin.add_view(ModelView(Product, db.session, name=u'商品管理'))
-admin.add_view(ModelView(Tag, db.session, name=u'标签管理'))
-admin.add_view(ModelView(Comment, db.session, name=u'评论管理'))
+    column_filters = ('name', 'phone', 'address', 'add_time')
+
+    column_searchable_list = ['name', 'email', 'phone']
 
 
-class UserView(ModelView):
-    pass
+class ProductAdmin(sqla.ModelView):
+    """
+    商品管理视图
+    """
+    column_list = ('id', 'name', 'price', 'pic')
+    column_labels = {
+        'id': u'编号',
+        'name': u'名称',
+        'price': u'价格',
+        'pic': u'图片',
+        'tag_id': u'分类',
+        'comments': u'评论'
+    }
+    form_excluded_columns = ['comments']
 
+    column_filters = ('id', 'name', 'price', 'tag_id')
 
-class ProductView(ModelView):
+    column_searchable_list = ['name', 'id', 'price', 'tag_id']
+
     # 设置缩略图
     def _list_thumbnail(view, context, model, name):
         if not model.head_img:
@@ -162,7 +212,7 @@ class ProductView(ModelView):
     }
     # 扩展列表显示的头像为60*60像素
     form_extra_fields = {
-        'head_img': form.ImageUploadField('Image',
+        'head_img': form.ImageUploadField(u'图像',
                                           base_path=file_path,
                                           relative_path='uploadFile/',
                                           thumbnail_size=(60, 60, True))
@@ -186,13 +236,52 @@ class ProductView(ModelView):
                 pass
 
 
-class TagView(ModelView):
-    pass
+class TagAdmin(sqla.ModelView):
+    """
+    商品分类管理视图
+    """
+    column_list = ('name', 'add_time', 'products')
+
+    column_labels = {
+        'name': u'名称',
+        'add_time': u'添加时间',
+        'products': u'下属商品'
+    }
+
+    column_filters = ('name', 'add_time')
+
+    column_searchable_list = ['name', 'add_time']
 
 
-class CommentView(ModelView):
-    pass
+class CommentAdmin(sqla.ModelView):
+    """
+    评论管理视图
+    """
+    can_delete = False
+    can_edit = False
+    can_create = False
+    column_labels = {
+        'id': u'编号',
+        'content': u'评论内容',
+        'product_id': u'所属商品',
+        'user_id': u'所属用户',
+        'add_time': u'添加时间',
+    }
 
+    column_filters = ('content', 'add_time', 'product_id')
+
+    column_searchable_list = ('content', 'add_time', 'product_id', 'user_id')
+
+
+admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3', index_view=MyAdminIndexView(), base_template='my\
+_master.html')
+
+admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
+
+admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
+admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
+admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
+admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
 
 # 开启调试模式
 app.debug = True

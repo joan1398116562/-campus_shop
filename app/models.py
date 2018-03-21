@@ -51,7 +51,7 @@ class Product(db.Model):
     # 编号
     id = db.Column(db.Integer, primary_key=True)
     # 名称
-    name = db.Column(db.Integer, unique=True)
+    name = db.Column(db.String(255), unique=True)
     # 价格
     price = db.Column(db.Float)
     # 图片
