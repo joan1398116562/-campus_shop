@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
+from werkzeug.security import check_password_hash
 
 
 # 实例化app
@@ -38,11 +39,33 @@ class User(db.Model):
     address = db.Column(db.String(255))
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # 会员登录日志关系外联
+    userlogs = db.relationship('Userlog', backref='user')
     # 用户评论外键关系关联
     comments = db.relationship('Comment', backref='user')
 
     def __repr__(self):
         return "<User %r>" % self.name
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+
+class Userlog(db.Model):
+    """会员登录日志"""
+    __tablename__ = "userlog"
+    __table_args = {
+        "useexisting": True
+    }
+    # 编号
+    id = db.Column(db.Integer, primary_key=True)
+    # 所属会员外键
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # 登录时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return "<User %r>" % self.id
 
 
 class Product(db.Model):

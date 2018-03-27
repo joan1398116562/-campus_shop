@@ -136,6 +136,13 @@ class LoginForm(FlaskForm):
         }
     )
 
+    submit = SubmitField(
+        '登录',
+        render_kw={
+            "class": "btn btn-lg btn-success btn-block",
+        }
+    )
+
 
 class UserForm(FlaskForm):
     """

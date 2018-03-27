@@ -12,7 +12,7 @@ from app import db
 
 from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm, AdminLoginForm
 
-from app.models import User, AdminUser
+from app.models import User, AdminUser, Userlog
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])  # 上传通过检查
@@ -28,6 +28,7 @@ def allowed_file(filename):
 def user_login_dec(f):
     """
     登录装饰器
+    已登录就可以访问，否则重定向至登录，next页面为当前请求的url
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -52,25 +53,31 @@ def login():
     登录视图
     :return: login.html
     """
-    form = LoginForm()
-    if form.validate_on_submit():
-        data = form.data
-        user = User.query.filter_by(name=data["name"]).first()
-        if user:
-            if not user.check_password(data["password"]):
-                flash("输入的密码错误", "error")
+    if request.method == 'GET':  # get请求
+        form = LoginForm()
+        return render_template('home/login.html', form=form)
+    else:   # post请求
+        form = LoginForm(request.form)
+        if form.validate_on_submit():
+            data = form.data
+            user = User.query.filter_by(name=data['name']).first()
+            if user:
+                if not user.check_password(data['password']):
+                    flash("密码错误", 'err')
+                    return redirect(url_for('home.login'))
+            else:
+                flash("输入的账户不存在", 'err')
                 return redirect(url_for('home.login'))
-        else:
-            flash("账户不存在", "error")
-            return redirect(url_for('home.login'))
-        session["user"] = user.name
-        session["user_id"] = user.id
-        try:
+
+            session['user'] = user.name
+            session['user_id'] = user.id
+            userlog = Userlog(
+                user_id=user.id
+            )
+            db.session.add(userlog)
             db.session.commit()
-        except:
-            db.session.rollback()
-        # return redirect(url_for('home.user'))
-    return render_template('home/login.html', form=form)
+            return redirect(url_for('home.user'))
+        return render_template('home/login.html', form=form)
 
 
 @home.route("/register/", methods=["GET", "POST"])
@@ -86,7 +93,7 @@ def register():
             name=data["name"],
             email=data["email"],
             phone=data["phone"],
-            password=data["password"]
+            password=generate_password_hash(data["password"])
         )
         db.session.add(user)
         try:
@@ -96,6 +103,7 @@ def register():
             db.session.rollback()
 
         flash("你已经成功注册", "ok")
+
     return render_template("home/register.html", form=form)
 
 
@@ -106,8 +114,8 @@ def user():
     用户信息中心视图
     :return: user.html
     """
-    form = UserForm
-    user = User.query.get(int(session["user"]))
+    form = UserForm()
+    user = User.query.get(int(session['user_id']))
     form.face.validators = []
     if request.method == "GET":
         form.name.data = user.name
@@ -120,7 +128,21 @@ def user():
         #     if not os.path.exists(app.config["FACE_FOLDER"]):
         #         os.makedirs(app.config["FACE_FOLDER"])
         #         os.chmod(app.config["FACE_FOLDER"])
-    return render_template("home/user.html")
+
+        user.name = data['name']
+        user.email = data['email']
+        user.phone = data['phone']
+
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+
+        flash("你的信息已经修改成功", 'ok')
+        return redirect(url_for('home.user'))
+
+    return render_template("home/user.html", form=form, user=user)
 
 
 @home.route("/pwd/", methods=["GET", "POST"])

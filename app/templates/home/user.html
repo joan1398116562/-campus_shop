@@ -11,33 +11,69 @@
                 <span class="fas fa-cog fa-lg fa-spin"></span>  会员中心</h3>
         </div>
         <div class="panel-body">
-            <form role="form">
+            {% for msg in get_flashed_messages(category_filter=['ok']) %}
+                <div class="alert alert-success alert-dismissible">
+                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                            </button>
+                            <h4><i class="fas fa-check"></i> 操作成功</h4>
+                            {{ msg }}
+                </div>
+
+            {% endfor %}
+
+            <form role="form" method="post"  enctype="multipart/form-data">
                 <fieldset>
                     <div class="form-group">
-                        <label for="user_name"><span class="fas fa-user-secret"></span> 用户名</label>
-                        <input id="user_name" class="form-control" placeholder="用户名" name="name" type="text" autofocus
-                               value="Joan">
+                        <label for="user_name"><span class="fas fa-user-secret"></span> {{ form.name.label }}</label>
+                        {{ form.name }}
+{#                        <input id="user_name" class="form-control" placeholder="用户名" name="name" type="text" autofocus#}
+{#                               value="Joan">#}
+                        {% for error in form.name.errors %}
+                            <div class="col-md-12">
+                                <p style="color: red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
+
                     </div>
                     <div class="col-md-12" id="error_name"></div>
 
                     <div class="form-group">
-                        <label for="user_email"><span class="fas fa-envelope"></span>&nbsp;邮箱</label>
-                        <input id="user_email" class="form-control" placeholder="邮箱" name="email" type="email"
-                               autofocus>
+                        <label for="user_email"><span class="fas fa-envelope"></span>&nbsp;{{ form.email.label }}</label>
+{#                        <input id="user_email" class="form-control" placeholder="邮箱" name="email" type="email"#}
+{#                               autofocus>#}
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <div class="col-md-12">
+                            <p style="color: red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-12" id="error_email"></div>
 
                     <div class="form-group">
-                        <label for="user_phone"><span class="fas fa-phone-square"></span>&nbsp;手机号</label>
-                        <input id="user_phone" class="form-control" placeholder="手机号" name="phone" type="text"
-                               autofocus>
+                        <label for="user_phone"><span class="fas fa-phone-square"></span>&nbsp;{{ form.phone.label }}</label>
+{#                        <input id="user_phone" class="form-control" placeholder="手机号" name="phone" type="text"#}
+{#                               autofocus>#}
+                        {{ form.phone }}
+                        {% for error in form.phone.errors %}
+                            <div class="col-md-12">
+                                <p style="color: red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-12" id="error_phone"></div>
 
                     <div class="form-group">
-                        <label for="user_card"><span class="fas fa-credit-card"></span>银行卡</label>
-                            <input id="user_card" class="form-control" placeholder="银行卡号" name="card" type="text"
-                            autofocus>
+                        <label for="user_card"><span class="fas fa-credit-card"></span>{{ form.card.label }}</label>
+                        {{ form.card }}
+{#                            <input id="user_card" class="form-control" placeholder="银行卡号" name="card" type="text"#}
+{#                            autofocus>#}
+                        {% for error in form.card.errors %}
+                            <div class="col-md-12">
+                                <p style="color: red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
+
                     </div>
                     <div class="col-md-12" id="error_card"></div>
 
@@ -62,6 +98,8 @@
                     </div>
                     <div class="col-md-12" id="error_info"></div>
                     <a href="user.html" class="btn btn-success"><span class="fas fa-save"></span>&nbsp;保存修改</a>
+                {{ form.csrf_token }}
+                            {{ form.submit }}
                 </fieldset>
             </form>
         </div>

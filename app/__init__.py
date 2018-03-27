@@ -13,7 +13,6 @@ from wtforms import form, fields, validators
 import flask_login as login
 import flask_admin as admin
 from flask_admin import Admin, form
-from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib import sqla
 from flask_admin import helpers as admin_helpers
 from flask_admin import expose
@@ -26,7 +25,7 @@ from sqlalchemy.event import listens_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.models import db
-from models import User, Product, Tag, Comment, AdminUser
+from models import User, Product, Tag, Comment, AdminUser, Userlog
 from home.forms import AdminLoginForm, RegistrationForm
 
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")  # 上传文件路径
@@ -235,7 +234,8 @@ class ProductAdmin(sqla.ModelView):
             except OSError:
                 pass
 
-
+class UserlogAdmin(sqla.ModelView):
+    pass
 class TagAdmin(sqla.ModelView):
     """
     商品分类管理视图
@@ -278,13 +278,15 @@ _master.html')
 
 admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
 
+
 admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
+admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
 admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
 admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
 
 # 开启调试模式
-app.debug = True
+app.debug = False
 
 from app.home import home as home_blueprint
 
