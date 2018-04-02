@@ -38,7 +38,7 @@ class User(db.Model):
     # 收货地址
     address = db.Column(db.String(255))
     # 添加时间
-    add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 会员登录日志关系外联
     userlogs = db.relationship('Userlog', backref='user')
     # 用户评论外键关系关联
@@ -62,7 +62,7 @@ class Userlog(db.Model):
     # 所属会员外键
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # 登录时间
-    add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
 
     def __repr__(self):
         return "<User %r>" % self.id
@@ -97,7 +97,7 @@ class Tag(db.Model):
     # 标题
     name = db.Column(db.String(100), unique=True)
     # 添加时间
-    add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 商品外键关系关联
     products = db.relationship("Product", backref='tag')
 
@@ -117,7 +117,7 @@ class Comment(db.Model):
     # 所属用户
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # 添加时间
-    add_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
 
     def __repr__(self):
         return "<Comment %r>" % self.id

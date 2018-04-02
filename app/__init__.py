@@ -136,7 +136,7 @@ class MyAdminIndexView(admin.AdminIndexView):
             login.login_user(adminuser)
             return redirect(url_for('.index'))
 
-        link = '<p>Already have an account? <a href="' + url_for('.login_view') + '">点击这里登录.</a></p>'
+        link = '<p>已经有账户了? <a href="' + url_for('.login_view') + '">点击这里登录.</a></p>'
         self._template_args['form'] = form
         self._template_args['link'] = link
         return super(MyAdminIndexView, self).index()
@@ -162,6 +162,7 @@ class UserAdmin(sqla.ModelView):
     can_create = False
     can_edit = False
     can_delete = False
+    column_display_pk = True
     column_labels = {
         'name': u'昵称',
         'password': u'密码',
@@ -183,16 +184,17 @@ class ProductAdmin(sqla.ModelView):
     """
     商品管理视图
     """
-    column_list = ('id', 'name', 'price', 'pic')
+    column_display_pk = True
+    column_list = ('id', 'name', 'price')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
         'price': u'价格',
-        'pic': u'图片',
         'tag_id': u'分类',
+        'tag': u'所属分类',
         'comments': u'评论'
     }
-    form_excluded_columns = ['comments']
+    form_excluded_columns = ['comments', 'pic']
 
     column_filters = ('id', 'name', 'price', 'tag_id')
 
@@ -234,8 +236,24 @@ class ProductAdmin(sqla.ModelView):
             except OSError:
                 pass
 
+
 class UserlogAdmin(sqla.ModelView):
-    pass
+    can_create = False
+    can_edit = False
+    can_delete = False
+
+    column_list = ('add_time', 'user_id')
+
+    column_display_pk = True
+
+    column_labels = {
+        'add_time': u'登录时间',
+        'user_id': u'所属用户'
+    }
+
+    column_searchable_list = ['user_id']
+
+
 class TagAdmin(sqla.ModelView):
     """
     商品分类管理视图
@@ -280,7 +298,7 @@ admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
 
 
 admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
-admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户管理'))
+admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户日志管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
 admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
 admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
