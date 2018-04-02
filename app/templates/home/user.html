@@ -5,7 +5,7 @@
 
 {% block content %}
     {% include "home/menu.html" %}
-    <div class="panel panel-success">
+    <div class="panel panel-warning">
         <div class="panel-heading">
             <h3 class="panel-title">
                 <span class="fas fa-cog fa-lg fa-spin"></span>  会员中心</h3>
@@ -80,7 +80,7 @@
                     <div class="form-group">
                         <label for="user_face"><span class="fas fa-image"></span>&nbsp;头像</label>
                         <img src="holder.js/100x100?theme=sky" class="img-responsive img-rounded">
-                        <a class="btn btn-success" style="margin-top:6px;"><span
+                        <a class="btn btn-warning" style="margin-top:6px;"><span
                                 class="fas fa-upload"></span>&nbsp;上传头像</a>
                         <input id="input_face" class="form-control" name="face" type="hidden" autofocus>
                     </div>
@@ -97,8 +97,8 @@
                         <textarea class="form-control" rows="10" id="input_info"></textarea>
                     </div>
                     <div class="col-md-12" id="error_info"></div>
-                    <a href="user.html" class="btn btn-success"><span class="fas fa-save"></span>&nbsp;保存修改</a>
-                {{ form.csrf_token }}
+{#                    <a href="user.html" class="btn btn-success"><span class="fas fa-save"></span>&nbsp;保存修改</a>#}
+                         {{ form.csrf_token }}
                             {{ form.submit }}
                 </fieldset>
             </form>

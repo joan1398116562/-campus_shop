@@ -1,86 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1 , user-scalable=no">
-    <title>校园商铺系统</title>
-{#  添加Favicon #}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap-movie.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/bootstrap-theme.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/font-awesome.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/fontawesome/css/fontawesome-all.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/login.css') }}">
-{#    <link rel="stylesheet" href="{{ url_for('static', filename='base/css/animate.css')}}">#}
-    <style>
-        .navbar-brand>img {
-            display: inline;
-        }
+<title>校园商铺系统</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="{{ url_for('static', filename='base/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
+<link href="{{ url_for('static', filename='base/css/style.css') }}" rel="stylesheet" type="text/css"/>
+<!-- js -->
+<script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ url_for('static', filename='base/js/simpleCart.min.js') }}"></script>
 
-    </style>
-    <style>
-        .media{
-            padding:3px;
-            border:1px solid #ccc
-        }
-
-    </style>
+<script src="{{ url_for('static', filename='base/js/bootstrap.min.js') }}"></script>
+<!-- //for bootstrap working -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<!-- timer -->
+<link href="{{ url_for('static', filename='base/css/jquery.countdown.css') }}">
+<!-- //timer -->
+<!-- animation-effect -->
+<link href="{{ url_for('static', filename='base/css/animate.min.css') }}">
+<script src="{{ url_for('static', filename='base/js/wow.min.js') }}"></script>
+<script>
+ new WOW().init();
+</script>
+<!-- //animation-effect -->
     {% block css %}
     {% endblock css %}
 </head>
 
 <body>
-<!--导航条-->
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <!--导航按钮和logo适应移动设备-->
-        <div class="navbar-header">
-            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="index.html"
-               class="navbar-brand" style="width:250px;">
-                <img src="{{ url_for('static', filename='base/images/shop.png')}}", style="height: 30px">&nbsp;校园商铺系统
-            </a>
-        </div>
-      <!--导航按钮和logo适应移动设备-->
-        <!--导航-->
-        <div class="navbar-collapse collapse">
-            <form class="navbar-form navbar-left" role="search" style="margin-top:18px;">
-                <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="点击这里搜索">
-                    <span class="input-group-btn">
-                        <a class="btn btn-default" href="search.html"><span class="glyphicon glyphicon-search"></span>&nbsp;搜索</a>
-                    </span>
-                </div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="curlink" href="index.html"><span class="fas fa-certificate"></span>&nbsp;分类</a>
-                </li>
-                <li>
-                    <a class="curlink" href="{{ url_for('home.login') }}"><span class="fas fa-sign-in-alt"></span>&nbsp;登录</a>
-                </li>
-                <li>
-                    <a class="curlink" href="{{ url_for('home.register') }}"><span class="fas fa-plus"></span>&nbsp;注册</a>
-                </li>
-                <li>
-                    <a class="curlink" href="{{ url_for('home.user') }}"><span class="fas fa-user"></span>&nbsp;用户</a>
-                </li>
-            </ul>
-        </div>
-        <!--导航-->
+<!-- 导航条-->
 
-    </div>
-</nav>
-<!--导航条-->
-
+	<div class="header">
+		<div class="container">
+			<div class="logo-nav">
+				<div class="logo-nav-left animated wow zoom-in" data-wow-delay=".5s">
+					<h1><a href="base.html">Campus Shop<span>畅快购物</span></a></h1>
+				</div>
+				<div class="logo-nav-left1">
+                    <!--导航按钮和logo适应移动设备-->
+					<nav class="navbar navbar-default">
+					<div class="navbar-header nav_2">
+						<button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+						<ul class="nav navbar-nav">
+							<li class="active"><a href="{{ url_for('home.index') }}" class="act">首页</a></li>
+							<!-- Mega Menu -->
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">商品<b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<div class="row">
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Men's Wear</h6>
+												<li><a href="products.html">Clothing</a></li>
+												<li><a href="products.html">Wallets</a></li>
+												<li><a href="products.html">Shoes</a></li>
+												<li><a href="products.html">Watches</a></li>
+												<li><a href="products.html">Accessories</a></li>
+											</ul>
+										</div>
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Women's Wear</h6>
+												<li><a href="products.html">Clothing</a></li>
+												<li><a href="products.html">Wallets,Bags</a></li>
+												<li><a href="products.html">Footwear</a></li>
+												<li><a href="products.html">Watches</a></li>
+												<li><a href="products.html">Accessories</a></li>
+												<li><a href="products.html">Jewellery</a></li>
+												<li><a href="products.html">Beauty & Grooming</a></li>
+											</ul>
+										</div>
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Kid's Wear</h6>
+												<li><a href="products.html">Kids Home Fashion</a></li>
+												<li><a href="products.html">Boy's Clothing</a></li>
+												<li><a href="products.html">Girl's Clothing</a></li>
+												<li><a href="products.html">Shoes</a></li>
+												<li><a href="products.html">Brand Stores</a></li>
+											</ul>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">热销<b class="caret"></b></a>
+								<ul class="dropdown-menu multi-column columns-3">
+									<div class="row">
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Home Collection</h6>
+												<li><a href="furniture.html">Cookware</a></li>
+												<li><a href="furniture.html">Sofas</a></li>
+												<li><a href="furniture.html">Dining Tables</a></li>
+												<li><a href="furniture.html">Shoe Racks</a></li>
+												<li><a href="furniture.html">Home Decor</a></li>
+											</ul>
+										</div>
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Office Collection</h6>
+												<li><a href="furniture.html">Carpets</a></li>
+												<li><a href="furniture.html">Tables</a></li>
+												<li><a href="furniture.html">Sofas</a></li>
+												<li><a href="furniture.html">Shoe Racks</a></li>
+												<li><a href="furniture.html">Sockets</a></li>
+												<li><a href="furniture.html">Electrical Machines</a></li>
+											</ul>
+										</div>
+										<div class="col-sm-4">
+											<ul class="multi-column-dropdown">
+												<h6>Decorations</h6>
+												<li><a href="furniture.html">Toys</a></li>
+												<li><a href="furniture.html">Wall Clock</a></li>
+												<li><a href="furniture.html">Lighting</a></li>
+												<li><a href="furniture.html">Top Brands</a></li>
+											</ul>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</ul>
+							</li>
+							<li><a href="{{ url_for('home.register')}}">注册</a></li>
+							<li><a href="{{ url_for('home.login') }}">登录</a></li>
+                            <li><a href="#">联系我们</a></li>
+						</ul>
+					</div>
+					</nav>
+				</div>
+				<div class="logo-nav-right">
+					<div class="search-box">
+						<div id="sb-search" class="sb-search">
+							<form>
+								<input class="sb-search-input" placeholder="搜索内容" type="search" id="search">
+								<input class="sb-search-submit" type="submit" value="">
+								<span class="sb-icon-search"> </span>
+							</form>
+						</div>
+					</div>
+						<!-- search-scripts -->
+                    <script src="{{ url_for('static',filename='base/js/classie.js') }}"></script>
+                    <script src="{{ url_for('static', filename='base/js/uisearch.js') }}"></script>
+							<script>
+								new UISearch( document.getElementById( 'sb-search' ) );
+							</script>
+						<!-- //search-scripts -->
+				</div>
+				<div class="header-right">
+					<div class="cart box_1">
+						<a href="checkout.html">
+							<h3> <div class="total">
+								<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>个)</div>
+								<img src="{{ url_for('static', filename='base/images/bag.png') }}" alt="" />
+							</h3>
+						</a>
+						<p><a href="javascript:;" class="simpleCart_empty">空</a></p>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+<!-- 导航条 -->
 <!--内容-->
 <div class="container" style="margin-top:76px">
     {% block content %}
@@ -88,25 +184,18 @@
 </div>
 <!--内容-->
 
-<!--底部-->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p>
-                    ©&nbsp;2018&nbsp;校园商铺中心
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-<!--底部-->
-<script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js')}}"></script>
-<script src="{{ url_for('static', filename='base/js/bootstrap.min.js')}}"></script>
-<script src="{{ url_for('static', filename='base/js/jquery.singlePageNav.min.js')}}"></script>
-<script src="{{ url_for('static', filename='base/js/wow.min.js')}}"></script>
-<script src="{{ url_for('static', filename='lazyload/jquery.lazyload.min.js')}}"></script>
-<script src="{{ url_for('static', filename='holder.min.js')}}"></script>
+<!-- 底部 -->
+	<div class="footer">
+		<div class="container">
+			<div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
+				<h2><a href="base.html">校园商铺<span>爽快购物</span></a></h2>
+			</div>
+			<div class="copy-right animated wow slideInUp" data-wow-delay=".5s">
+				<p>Copyright &copy; 2018.校园商铺系统 All rights reserved</p>
+			</div>
+		</div>
+	</div>
+<!-- 底部结束 -->
 {% block js %}
 {% endblock js %}
 </body>

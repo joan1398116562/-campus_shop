@@ -42,9 +42,9 @@ def user_login_dec(f):
 def index():
     """
     首页视图
-    :return: index.html
+    :return: base.html
     """
-    return render_template("home/index.html")
+    return render_template("home/base.html")
 
 
 @home.route("/login/", methods=["GET", "POST"])

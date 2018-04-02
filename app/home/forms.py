@@ -76,7 +76,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField(
         '注册',
         render_kw={
-            "class": "btn btn-lg btn-success btn-block",
+            "class": "btn btn-lg btn-warning btn-block",
         }
     )
 
@@ -139,7 +139,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField(
         '登录',
         render_kw={
-            "class": "btn btn-lg btn-success btn-block",
+            "class": "btn btn-lg btn-warning btn-block",
         }
     )
 
@@ -236,7 +236,7 @@ class UserForm(FlaskForm):
     submit = SubmitField(
         '保存修改',
         render_kw={
-            "class": "btn btn-success",
+            "class": "btn btn-warning",
         }
     )
 
