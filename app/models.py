@@ -77,6 +77,8 @@ class Product(db.Model):
     name = db.Column(db.String(255), unique=True)
     # 价格
     price = db.Column(db.Float)
+    # 库存
+    stock = db.Column(db.Integer)
     # 图片
     pic = db.Column(db.String(255), unique=True)
 

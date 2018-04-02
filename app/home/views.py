@@ -12,7 +12,7 @@ from app import db
 
 from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm, AdminLoginForm
 
-from app.models import User, AdminUser, Userlog
+from app.models import User, AdminUser, Userlog, Product, Tag
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])  # 上传通过检查
@@ -38,13 +38,13 @@ def user_login_dec(f):
     return decorated_function
 
 
-@home.route("/")
+@home.route("/index/")
 def index():
     """
     首页视图
     :return: base.html
     """
-    return render_template("home/base.html")
+    return render_template("home/index.html")
 
 
 @home.route("/login/", methods=["GET", "POST"])
@@ -166,4 +166,12 @@ def pwd():
         except:
             db.session.rollback()
     return render_template("home/pwd.html")
+
+
+@home.route("/product/", methods=["GET", "POST"])
+def product_list():
+    products = Product.query.all()
+
+    return render_template("home/product_list.html", products=products)
+
 

@@ -185,20 +185,21 @@ class ProductAdmin(sqla.ModelView):
     商品管理视图
     """
     column_display_pk = True
-    column_list = ('id', 'name', 'price')
+    column_list = ('id', 'name', 'price', 'stock')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
         'price': u'价格',
+        'stock': u'库存',
         'tag_id': u'分类',
         'tag': u'所属分类',
         'comments': u'评论'
     }
     form_excluded_columns = ['comments', 'pic']
 
-    column_filters = ('id', 'name', 'price', 'tag_id')
+    column_filters = ('id', 'name', 'price', 'stock', 'tag_id')
 
-    column_searchable_list = ['name', 'id', 'price', 'tag_id']
+    column_searchable_list = ['name', 'id', 'price', 'stock', 'tag_id']
 
     # 设置缩略图
     def _list_thumbnail(view, context, model, name):
@@ -220,24 +221,27 @@ class ProductAdmin(sqla.ModelView):
     }
 
     # 监听删除图片, 当该商品被删除时,同时在磁盘上把图片删除
-    @listens_for(Product, 'after_delete')
-    def del_image(mapper, connection, target):
-        if target.head_img:
-            # Delete image
-            try:
-                os.remove(op.join(file_path, target.head_img))
-            except OSError:
-                pass
-
-            # Delete thumbnail
-            try:
-                os.remove(op.join(file_path,
-                                  form.thumbgen_filename(target.head_img)))
-            except OSError:
-                pass
+    # @listens_for(Product, 'after_delete')
+    # def del_image(mapper, connection, target):
+    #     if target.head_img:
+    #         # Delete image
+    #         try:
+    #             os.remove(op.join(file_path, target.head_img))
+    #         except OSError:
+    #             pass
+    #
+    #         # Delete thumbnail
+    #         try:
+    #             os.remove(op.join(file_path,
+    #                               form.thumbgen_filename(target.head_img)))
+    #         except OSError:
+    #             pass
 
 
 class UserlogAdmin(sqla.ModelView):
+    """
+    用户登录日志视图
+    """
     can_create = False
     can_edit = False
     can_delete = False
