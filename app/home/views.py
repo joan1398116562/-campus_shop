@@ -168,10 +168,10 @@ def pwd():
     return render_template("home/pwd.html")
 
 
-@home.route("/product/", methods=["GET", "POST"])
+@home.route("/", methods=["GET", "POST"])
 def product_list():
+    tags = Tag.query.all()
     products = Product.query.all()
-
-    return render_template("home/product_list.html", products=products)
+    return render_template("home/index.html", tags=tags, products=products)
 
 

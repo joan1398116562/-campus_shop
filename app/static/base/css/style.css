@@ -53,7 +53,50 @@ body a:hover{
 .header-grid-right{
 	float:right;
 }
-
+ul.social-icons li{
+	display:inline-block;
+	margin: 0px 4px;
+}
+ul.social-icons li a.facebook{
+	background: url(../images/img-sp.png) no-repeat -2px -5px;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+ul.social-icons li a.facebook:hover{
+	background: url(../images/img-sp.png) no-repeat -2px -54px;
+    display: block;
+}
+ul.social-icons li a.twitter{
+	background:url(../images/img-sp.png) no-repeat -49px -13px;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+ul.social-icons li a.twitter:hover{
+	background:url(../images/img-sp.png) no-repeat -49px -54px;
+    display: block;
+}
+ul.social-icons li a.g{
+	background:url(../images/img-sp.png) no-repeat -94px -12px;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+ul.social-icons li a.g:hover{
+	background:url(../images/img-sp.png) no-repeat -94px -54px;
+    display: block;
+}
+ul.social-icons li a.instagram{
+	background:url(../images/img-sp.png) no-repeat -139px -12px;
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+ul.social-icons li a.instagram:hover{
+	background:url(../images/img-sp.png) no-repeat -139px -52px;
+    display: block;
+}
 .logo-nav-left{
 	float:left;
 }
