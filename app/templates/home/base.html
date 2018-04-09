@@ -6,20 +6,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="/static/base/css/animate.min.css">
 <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
-{#<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);#}
-{#		function hideURLbar(){ window.scrollTo(0,1); } </script>#}
 <link href="{{ url_for('static', filename='base/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
 <link href="{{ url_for('static', filename='base/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
 <link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css" media="all">
 <script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js') }}"></script>
 <script src="{{ url_for('static', filename='base/js/simpleCart.min.js') }}"></script>
-
 <script src="{{ url_for('static', filename='base/js/bootstrap.min.js') }}"></script>
 <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
 <link href='https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <link href="{{ url_for('static', filename='base/css/jquery.countdown.css') }}">
-{#<link href="{{ url_for('static', filename='base/css/animate.css') }}">#}
-{#<link href="/static/base/css/animate.css">#}
 <script src="{{ url_for('static', filename='base/js/wow.min.js') }}"></script>
 <script>
  new WOW().init();
@@ -34,7 +29,7 @@
 	<div class="header">
 		<div class="container">
 			<div class="logo-nav">
-				<div class="logo-nav-left wow zoomInDown" data-wow-delay="0.5s"  >
+				<div class="logo-nav-left wow zoomIn" data-wow-delay="0.5s"  >
 					<h1><a href="base.html">Campus Shop<span>畅快购物</span></a></h1>
 				</div>
 				<div class="logo-nav-left1 animated zoomIn">
@@ -132,7 +127,7 @@
 							</li>
 							<li><a href="{{ url_for('home.register')}}">注册</a></li>
 							<li><a href="{{ url_for('home.login') }}">登录</a></li>
-                            <li><a href="#">联系我们</a></li>
+                            <li><a href="{{ url_for('home.user') }}">会员中心</a></li>
 						</ul>
 					</div>
 					</nav>
@@ -173,14 +168,14 @@
 	</div>
 <!-- 导航条 -->
 <!--内容-->
-<div class="container">
+
     {% block content %}
     {% endblock content %}
-</div>
+
 
 <!--内容-->
 <!-- 底部 -->
-	<div class="footer">
+	<div class="footer" style="margin-top: 80px">
 		<div class="container">
 			<div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
 				<h2><a href="base.html">校园商铺<span>爽快购物</span></a></h2>

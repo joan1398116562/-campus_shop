@@ -38,15 +38,6 @@ def user_login_dec(f):
     return decorated_function
 
 
-@home.route("/index/")
-def index():
-    """
-    首页视图
-    :return: base.html
-    """
-    return render_template("home/index.html")
-
-
 @home.route("/login/", methods=["GET", "POST"])
 def login():
     """
@@ -96,11 +87,10 @@ def register():
             password=generate_password_hash(data["password"])
         )
         db.session.add(user)
-        try:
-            db.session.commit()
+        db.session.commit()
         #     数据库事务回滚
-        except:
-            db.session.rollback()
+        # except
+        #     db.session.rollback()
 
         flash("你已经成功注册", "ok")
 
@@ -161,17 +151,54 @@ def pwd():
             return redirect(url_for('home.pwd'))
         user.pwd = generate_password_hash(data["new_password"])
         db.session.add(user)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
-    return render_template("home/pwd.html")
+        db.session.commit()
+        return redirect(url_for('home.login'))
+    return render_template("home/pwd.html", form=form)
 
 
-@home.route("/", methods=["GET", "POST"])
-def product_list():
+@home.route("/logout/")
+def logout():
+    """
+    退出登录视图
+    :return: redirect to login
+    """
+    session.pop("user", None)
+    session.pop("user_id", None)
+
+    return redirect(url_for('home.login'))
+
+
+@home.route("/<int:page>/", methods=['GET'])
+@home.route("/", methods=["GET"])
+def index(page=None):
     tags = Tag.query.all()
-    products = Product.query.all()
-    return render_template("home/index.html", tags=tags, products=products)
+    page_data = Product.query
+    # 分类
+    tid = request.args.get("tid", 0)
+    if int(tid) != 0:
+        page_data = page_data.filter_by(tag_id=int(tid))
+    # 时间
+    time = request.args.get("time", 0)
+    if int(time) != 0:
+        if int(time) == 1:
+            page_data = page_data.order_by(Product.add_time.desc())
+        else:
+            page_data = page_data.order_by(Product.add_time.asc())
+    # 销量
+    sell = request.args.get("sell", 0)
+    if int(sell) != 0:
+        if int(sell) == 1:
+            page_data = page_data.order_by(Product.sell.desc())
+        else:
+            page_data = page_data.order_by(Product.sell.asc())
+    if page is None:
+        page = 1
+    page_data = page_data.paginate(page=page, per_page=8)
+    p = dict(
+        tid=tid,
+        time=time,
+        sell=sell,
+    )
+    return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
 
 

@@ -2,7 +2,9 @@
 {% block css %}
     <link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css" media="all">
 {% endblock %}
+{% import 'home/page.html' as pg %}
 {% block content %}
+{#    轮播图开始    #}
     <div class="animated wow fadeInRight" data-wow-delay="0.6s">
     <section id="Carousel" data-wow-delay="0.6s">
     <div id="myCarousel" class="carousel slide">
@@ -48,35 +50,80 @@
 	</a>
     </div>
     </section>
-    <section id="product_list">
-        <div class="container">
-            <div class="row wow fadeIn" data-wow-delay="0.5s">
-                <div class="col-md-12 table-responsive">
-                    <table class="table text-left table-bordered" id="product_tags">
-                        <tr>
-                            <td style="width: 10%;">商品分类</td>
-                            <td style="width: 90%;">
-                                {% for v in tags %}
-                                    <a href="{{ url_for('home.index') }}" class="label label-info">
-                                        <span class="fas fa-tag"></span>{{ v.name }}</a>
-                                {% endfor %}
-
-                            </td>
-                        </tr>
-                         <tr>
-                            <td style="width: 10%;">商品</td>
-                            <td style="width: 90%;">
-                                {% for product in products %}
-                                    <a href="{{ url_for('home.index') }}" class="label label-info">
-                                        <span class="fas fa-product-hunt"></span>{{ product.name }}</a>
-                                {% endfor %}
-
-                            </td>
-                        </tr>
-                    </table>
+    </div>
+{#    轮播图结束   #}
+    <div class="container">
+        <div class="row wow fadeIn" data-wow-delay="0.6s">
+            <div class="col-md-12">
+                <div class="col-md-2">分类</div>
+                <div class="col-md-10">
+                    {% for tag in tags %}
+                        <a href="{{ url_for('home.index',page=1) }}?tid={{ tag.id }}&time={{ p['time'] }}&sell={{ p['sell'] }}"
+                                   class="label label-info"><span
+                                        class="glyphicon glyphicon-tag"></span>&nbsp;{{ tag.name }}</a>
+                            &nbsp;
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2">上架时间</div>
+                <div class="col-md-10">
+                    <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&time=1&sell={{ p['sell'] }}"
+                       class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;最近</span>
+                    </a>
+                    &nbsp;
+                    <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&time=2&sell={{ p['sell'] }}"
+                       class="label label-default"><span class="glyphicon glyphicon-time"></span>&nbsp;更早</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="col-md-12">
+                {{ pg.page(page_data,'home.index') }}
+            </div>
     </div>
+{#    <section id="product_list">#}
+{#        <div class="container">#}
+{#            <div class="row wow fadeIn" data-wow-delay="0.5s">#}
+{#            <div id="melon-list">#}
+{#    {% for melon in melon_list %}#}
+{#    <div class="melon-summary well">#}
+{#        <h2><a href="/melon/{{melon.id}}">{{melon.common_name}}</a></h2>#}
+{#        <a href="/melon/{{melon.id}}">#}
+{#        <img src="{{melon.imgurl}}">#}
+{#        </a>#}
+{#        <h3>{{melon.price_str()}}</h3>#}
+{#        <a class="btn btn-primary" href="/melon/{{melon.id}}">Details</a>#}
+{#    </div>#}
+{#    {% endfor %}#}
+{#</div>#}
+{##}
+{#                <div class="col-md-12 table-responsive">#}
+{#                    <table class="table text-left table-bordered" id="product_tags">#}
+{#                        <tr>#}
+{#                            <td style="width: 10%;">商品分类</td>#}
+{#                            <td style="width: 90%;">#}
+{#                                {% for v in tags %}#}
+{#                                    <a href="{{ url_for('home.index') }}" class="label label-info">#}
+{#                                        <span class="fas fa-tag"></span>{{ v.name }}</a>#}
+{#                                {% endfor %}#}
+{##}
+{#                            </td>#}
+{#                        </tr>#}
+{#                         <tr>#}
+{#                            <td style="width: 10%;">商品</td>#}
+{#                            <td style="width: 90%;">#}
+{#                                {% for product in products %}#}
+{#                                    <a href="{{ url_for('home.index') }}" class="label label-info">#}
+{#                                        <span class="fas fa-product-hunt"></span>{{ product.name }}</a>#}
+{#                                {% endfor %}#}
+{##}
+{#                            </td>#}
+{#                        </tr>#}
+{#                    </table>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </section>#}
+
 {% endblock %}

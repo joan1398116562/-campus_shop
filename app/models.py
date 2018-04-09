@@ -79,9 +79,12 @@ class Product(db.Model):
     price = db.Column(db.Float)
     # 库存
     stock = db.Column(db.Integer)
+    # 销量
+    sell = db.Column(db.Integer, default=0)
     # 图片
     pic = db.Column(db.String(255), unique=True)
-
+    # 添加时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 商品所属分类
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
     # 商品评论外键关系关联

@@ -1,10 +1,13 @@
 {% extends "home/base.html" %}
 {% block css %}
+{#    添加城市选择框的样式表  #}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base/css/city-picker.css') }}">
 {% endblock css %}
 
 {% block content %}
-    {% include "home/menu.html" %}
+    <div class="container">
+        {% include "home/menu.html" %}
+    <div class="col-md-8">
     <div class="panel panel-warning">
         <div class="panel-heading">
             <h3 class="panel-title">
@@ -79,7 +82,7 @@
 
                     <div class="form-group">
                         <label for="user_face"><span class="fas fa-image"></span>&nbsp;头像</label>
-                        <img src="holder.js/100x100?theme=sky" class="img-responsive img-rounded">
+                        <img src="holder.js/100x100?theme=random" class="img-responsive img-rounded">
                         <a class="btn btn-warning" style="margin-top:6px;"><span
                                 class="fas fa-upload"></span>&nbsp;上传头像</a>
                         <input id="input_face" class="form-control" name="face" type="hidden" autofocus>
@@ -103,6 +106,8 @@
                 </fieldset>
             </form>
         </div>
+    </div>
+    </div>
     </div>
 {% endblock %}
 {% block js %}

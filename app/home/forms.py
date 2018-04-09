@@ -273,7 +273,7 @@ class PasswordForm(FlaskForm):
     submit = SubmitField(
         '修改密码',
         render_kw={
-            "class": "btn btn-success"
+            "class": "btn btn-warning"
         }
     )
 
