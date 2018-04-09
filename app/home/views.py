@@ -113,11 +113,11 @@ def user():
         form.phone.data = user.phone
     if form.validate_on_submit():
         data = form.data
-        # if form.face.data != "":
-        #     file_face = secure_filename(form.face.data.filename)
-        #     if not os.path.exists(app.config["FACE_FOLDER"]):
-        #         os.makedirs(app.config["FACE_FOLDER"])
-        #         os.chmod(app.config["FACE_FOLDER"])
+        if form.face.data != "":
+            file_face = secure_filename(form.face.data.filename)
+            if not os.path.exists(app.config["FACE_FOLDER"]):
+                os.makedirs(app.config["FACE_FOLDER"])
+                os.chmod(app.config["FACE_FOLDER"])
 
         user.name = data['name']
         user.email = data['email']
@@ -200,5 +200,10 @@ def index(page=None):
         sell=sell,
     )
     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
+
+
+@home.route("/order/", methods=['GET'])
+def order():
+    return render_template("home/order.html")
 
 

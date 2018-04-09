@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+{% block content %}
+    {% include "home/menu.html" %}
+
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('#md-4').addClass("active");
+        });
+    </script>
+{% endblock %}
