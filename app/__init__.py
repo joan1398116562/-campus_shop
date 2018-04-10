@@ -167,6 +167,7 @@ class UserAdmin(sqla.ModelView):
     can_delete = False
     column_display_pk = True
     column_labels = {
+        'id': u'编号',
         'name': u'昵称',
         'password': u'密码',
         'email': u'邮箱',
@@ -177,6 +178,8 @@ class UserAdmin(sqla.ModelView):
         'add_time': u'添加时间',
         'comments': u'评论'
     }
+
+    column_list = ('id', 'name', 'email', 'phone', 'card', 'face', 'address', 'add_time')
 
     column_filters = ('name', 'phone', 'address', 'add_time')
 

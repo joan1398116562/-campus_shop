@@ -187,9 +187,6 @@ class UserForm(FlaskForm):
 
     card = StringField(
         label="银行卡",
-        validators=[
-            DataRequired("请输入银行卡")
-        ],
         description="银行卡",
         render_kw={
             "class": "form-control",
@@ -223,9 +220,6 @@ class UserForm(FlaskForm):
 
     info = TextAreaField(
         label="简介",
-        validators=[
-            DataRequired("简介不能为空！")
-        ],
         description="简介",
         render_kw={
             "class": "form-control",

@@ -81,23 +81,48 @@
                     <div class="col-md-12" id="error_card"></div>
 
                     <div class="form-group">
-                        <label for="user_face"><span class="fas fa-image"></span>&nbsp;头像</label>
-                        <img src="holder.js/100x100?theme=random" class="img-responsive img-rounded">
-                        <a class="btn btn-warning" style="margin-top:6px;"><span
-                                class="fas fa-upload"></span>&nbsp;上传头像</a>
-                        <input id="input_face" class="form-control" name="face" type="hidden" autofocus>
+                        <label for="user_face"><span class="fas fa-image"></span>{{ form.face.label }}</label>
+                        {% if user.face %}
+                            <img src="{{ url_for('static', filename='uploads/users/' + user.face) }}"
+                            style="width:100px;" class="img-responsive img-rounded">
+                        {% else %}
+                             <img src="holder.js/100x100?theme=random" class="img-responsive img-rounded">
+                        {% endif %}
+                        {{ form.face }}
+                        {% for error in form.face.errors %}
+                            <div class="col-md-12">
+                                <p style="color: red;">{{ error }}</p>
+                            </div>
+                        {% endfor %}
+
+
+{#                        <a class="btn btn-warning" style="margin-top:6px;"><span#}
+{#                                class="fas fa-upload"></span>&nbsp;上传头像</a>#}
+{#                        <input id="input_face" class="form-control" name="face" type="hidden" autofocus>#}
                     </div>
                     <div class="col-md-12" id="error_face"></div>
 
                     <div class="form-group" style="position: relative">
-                        <label for="user_address"><span class="fas fa-map-marker"></span> 收货地址</label>
-                        <input id="user_address" data-toggle="city-picker" type="text" name="address" class="form-control">
+                        <label for="user_address"><span class="fas fa-map-marker"></span>{{ form.address.label }}</label>
+{#                        <input id="user_address" data-toggle="city-picker" type="text" name="address" class="form-control">#}
+                        {{ form.address }}
+                        {% for error in form.address.errors %}
+                            <div class="col-md-12">
+                                <p style="color:red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-12" id="error_address"></div>
 
                     <div class="form-group">
-                        <label for="input_info"><span class="fas fa-pen-square"></span>&nbsp;简介</label>
-                        <textarea class="form-control" rows="10" id="input_info"></textarea>
+                        <label for="input_info"><span class="fas fa-pen-square"></span>{{ form.info.label }}</label>
+{#                        <textarea class="form-control" rows="10" id="input_info"></textarea>#}
+                        {{ form.info }}
+                        {% for error in form.info.errors %}
+                            <div class="col-md-12">
+                                <p style="color: red">{{ error }}</p>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-12" id="error_info"></div>
 {#                    <a href="user.html" class="btn btn-success"><span class="fas fa-save"></span>&nbsp;保存修改</a>#}

@@ -1,24 +1,32 @@
 <!Doctype html>
 <html>
 <head>
-<title>校园商铺系统</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="/static/base/css/animate.min.css">
-<link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
-<link href="{{ url_for('static', filename='base/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all" />
-<link href="{{ url_for('static', filename='base/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
-<link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css" media="all">
-<script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ url_for('static', filename='base/js/simpleCart.min.js') }}"></script>
-<script src="{{ url_for('static', filename='base/js/bootstrap.min.js') }}"></script>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-<link href="{{ url_for('static', filename='base/css/jquery.countdown.css') }}">
-<script src="{{ url_for('static', filename='base/js/wow.min.js') }}"></script>
-<script>
- new WOW().init();
-</script>
+    <title>校园商铺系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="/static/base/css/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base/fontawesome/css/fontawesome-all.css') }}" type="text/css" media="all">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
+    <link href="{{ url_for('static', filename='base/css/bootstrap.css') }}" rel="stylesheet" type="text/css"
+          media="all"/>
+    <link href="{{ url_for('static', filename='base/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{ url_for('static', filename='base/css/styles.css') }}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css"
+          media="all">
+    <script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='base/js/simpleCart.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='base/js/bootstrap.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='base/css/pignose.layerslider.css') }} " rel="stylesheet" type="text/css"
+          media="all">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+          rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic'
+          rel='stylesheet' type='text/css'>
+    <link href="{{ url_for('static', filename='base/css/jquery.countdown.css') }}">
+    <script src="{{ url_for('static', filename='base/js/wow.min.js') }}"></script>
+    <script>
+        new WOW().init();
+    </script>
     {% block css %}
     {% endblock css %}
 </head>
@@ -26,165 +34,118 @@
 <body>
 <!-- 导航条-->
 
-	<div class="header">
-		<div class="container">
-			<div class="logo-nav">
-				<div class="logo-nav-left wow zoomIn" data-wow-delay="0.5s"  >
-					<h1><a href="base.html">Campus Shop<span>畅快购物</span></a></h1>
-				</div>
-				<div class="logo-nav-left1 animated zoomIn">
-                    <!--导航按钮和logo适应移动设备-->
-					<nav class="navbar navbar-default">
-					<div class="navbar-header nav_2">
-						<button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-					<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-						<ul class="nav navbar-nav">
-							<li class="active"><a href="{{ url_for('home.index') }}" class="act">首页</a></li>
-							<!-- Mega Menu -->
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">商品<b class="caret"></b></a>
-								<ul class="dropdown-menu multi-column columns-3">
-									<div class="row">
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Men's Wear</h6>
-												<li><a href="products.html">Clothing</a></li>
-												<li><a href="products.html">Wallets</a></li>
-												<li><a href="products.html">Shoes</a></li>
-												<li><a href="products.html">Watches</a></li>
-												<li><a href="products.html">Accessories</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Women's Wear</h6>
-												<li><a href="products.html">Clothing</a></li>
-												<li><a href="products.html">Wallets,Bags</a></li>
-												<li><a href="products.html">Footwear</a></li>
-												<li><a href="products.html">Watches</a></li>
-												<li><a href="products.html">Accessories</a></li>
-												<li><a href="products.html">Jewellery</a></li>
-												<li><a href="products.html">Beauty & Grooming</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Kid's Wear</h6>
-												<li><a href="products.html">Kids Home Fashion</a></li>
-												<li><a href="products.html">Boy's Clothing</a></li>
-												<li><a href="products.html">Girl's Clothing</a></li>
-												<li><a href="products.html">Shoes</a></li>
-												<li><a href="products.html">Brand Stores</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</ul>
-							</li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">热销<b class="caret"></b></a>
-								<ul class="dropdown-menu multi-column columns-3">
-									<div class="row">
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Home Collection</h6>
-												<li><a href="furniture.html">Cookware</a></li>
-												<li><a href="furniture.html">Sofas</a></li>
-												<li><a href="furniture.html">Dining Tables</a></li>
-												<li><a href="furniture.html">Shoe Racks</a></li>
-												<li><a href="furniture.html">Home Decor</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Office Collection</h6>
-												<li><a href="furniture.html">Carpets</a></li>
-												<li><a href="furniture.html">Tables</a></li>
-												<li><a href="furniture.html">Sofas</a></li>
-												<li><a href="furniture.html">Shoe Racks</a></li>
-												<li><a href="furniture.html">Sockets</a></li>
-												<li><a href="furniture.html">Electrical Machines</a></li>
-											</ul>
-										</div>
-										<div class="col-sm-4">
-											<ul class="multi-column-dropdown">
-												<h6>Decorations</h6>
-												<li><a href="furniture.html">Toys</a></li>
-												<li><a href="furniture.html">Wall Clock</a></li>
-												<li><a href="furniture.html">Lighting</a></li>
-												<li><a href="furniture.html">Top Brands</a></li>
-											</ul>
-										</div>
-										<div class="clearfix"></div>
-									</div>
-								</ul>
-							</li>
-							<li><a href="{{ url_for('home.register')}}">注册</a></li>
-							<li><a href="{{ url_for('home.login') }}">登录</a></li>
-                            <li><a href="{{ url_for('home.user') }}">会员中心</a></li>
-						</ul>
-					</div>
-					</nav>
-				</div>
-				<div class="logo-nav-right">
-					<div class="search-box">
-						<div id="sb-search" class="sb-search">
-							<form>
-								<input class="sb-search-input" placeholder="搜索内容" type="search" id="search">
-								<input class="sb-search-submit" type="submit" value="">
-								<span class="sb-icon-search"> </span>
-							</form>
-						</div>
-					</div>
-						<!-- search-scripts -->
-                    <script src="{{ url_for('static',filename='base/js/classie.js') }}"></script>
-                    <script src="{{ url_for('static', filename='base/js/uisearch.js') }}"></script>
-							<script>
-								new UISearch( document.getElementById( 'sb-search' ) );
-							</script>
-						<!-- //search-scripts -->
-				</div>
-				<div class="header-right">
-					<div class="cart box_1">
-						<a href="checkout.html">
-							<h3> <div class="total">
-								<span class="simpleCart_total"></span> (<span id="simpleCart_quantity" class="simpleCart_quantity"></span>个)</div>
-								<img src="{{ url_for('static', filename='base/images/bag.png') }}" alt="" />
-							</h3>
-						</a>
-						<p><a href="javascript:;" class="simpleCart_empty">空</a></p>
-						<div class="clearfix"> </div>
-					</div>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
-<!-- 导航条 -->
+
+    <div class="container">
+        <div class="logo-nav">
+            <div class="logo-nav-left wow zoomIn" data-wow-delay="0.5s" style="margin-left: 25px">
+                <h1><a href="base.html">Campus Shop<span>畅快购物</span></a></h1>
+            </div>
+            <div class="logo-nav-left1 animated zoomIn">
+                <!--导航按钮和logo适应移动设备-->
+                <nav class="navbar navbar-default">
+                    <div class="navbar-header nav_2">
+                        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse"
+                                data-target="#bs-megadropdown-tabs">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+
+             <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+
+                <li style="margin-left: 18em;margin-top: -6px">
+                    <a class="curlink" href="{{ url_for('home.user')}}"><span class="fas fa-user-secret fa-2x "></span>&nbsp;
+                        <span style="">会员中心</span></a>
+                </li>
+            </ul>
+             <form class="navbar-form navbar-left" role="search" style="margin-top: 1em; margin-left: 2em">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="请输入商品名！" id="key_movie">
+                    <span class="input-group-btn">
+                        <a class="btn btn-default" id="do_search"><span class="fas fa-search"></span>&nbsp;搜索</a>
+                    </span>
+                </div>
+            </form></div>
+        </nav>
+        <!--导航-->
+
+    </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+<div class="ban-top" style="margin-bottom: 40px">
+    <div class="container">
+        <div class="top_nav_left">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav menu__list">
+                            <li class="active menu__item menu__item--current"><a class="menu__link" href="{{ url_for('home.index') }}">首页
+                                <span class="sr-only">(current)</span></a></li>
+                            <li class=" menu__item"><a class="menu__link" href="electronics.html" style="margin-left: 1em
+">热销</a></li>
+                            <li class=" menu__item"><a class="menu__link" href="electronics.html">推荐</a></li>
+                            <li class=" menu__item"><a class="menu__link" href="contact.html">分类</a></li>
+                            <li class=" menu__item"><a class="menu__link" href="{{ url_for('home.login') }}">登录</a></li>
+                            <li class=" menu__item"><a class="menu__link" href="{{ url_for('home.register') }}">注册</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="top_nav_right">
+            <div class="cart box_1">
+                <a href="checkout.html">
+                    <h3>
+                        <div class="total">
+                            <i class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></i>
+                            <span class="simpleCart_total"></span> (<span id="simpleCart_quantity"
+                                                                          class="simpleCart_quantity"></span> 个)
+                        </div>
+
+                    </h3>
+                </a>
+                <p><a href="javascript:;" class="simpleCart_empty">空空如也</a></p>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
 <!--内容-->
 
-    {% block content %}
-    {% endblock content %}
+{% block content %}
+{% endblock content %}
 
 
 <!--内容-->
+
+
 <!-- 底部 -->
-	<div class="footer" style="margin-top: 80px">
-		<div class="container">
-			<div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
-				<h2><a href="base.html">校园商铺<span>爽快购物</span></a></h2>
-			</div>
-			<div class="copy-right animated wow slideInUp" data-wow-delay=".5s">
-				<p>Copyright &copy; 2018.校园商铺系统 All rights reserved</p>
-			</div>
-		</div>
-	</div>
+<div class="footer" style="margin-top: 40px">
+    <div class="container">
+        <div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
+            <h2><a href="base.html">校园商铺<span>爽快购物</span></a></h2>
+        </div>
+        <div class="copy-right animated wow slideInUp" data-wow-delay=".5s">
+            <p>Copyright &copy; 2018.校园商铺系统 All rights reserved</p>
+        </div>
+    </div>
+</div>
 <script src="{{ url_for('static', filename='base/js/jquery.lazyload.min.js') }}"></script>
 <!-- 底部结束 -->
 {% block js %}

@@ -1,4 +1,5 @@
 import os
+import datetime
 from functools import wraps  # 登录装饰器
 
 from werkzeug.utils import secure_filename
@@ -8,7 +9,7 @@ from flask import render_template, redirect, url_for, flash, session, request
 
 from werkzeug.security import generate_password_hash
 
-from app import db
+from app import db, config
 
 from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm, AdminLoginForm
 
@@ -23,6 +24,15 @@ def allowed_file(filename):
     上传通过检查
     """
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def change_name(filename):
+    """
+    修改文件夹名称
+    """
+    file_info = os.path.splitext(filename)
+    filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + file_info[-1]
+    return filename
 
 
 def user_login_dec(f):
@@ -111,17 +121,45 @@ def user():
         form.name.data = user.name
         form.email.data = user.email
         form.phone.data = user.phone
+        form.card.data = user.card
+        form.info.data = user.info
+        form.address.data = user.address
     if form.validate_on_submit():
         data = form.data
         if form.face.data != "":
             file_face = secure_filename(form.face.data.filename)
-            if not os.path.exists(app.config["FACE_FOLDER"]):
-                os.makedirs(app.config["FACE_FOLDER"])
-                os.chmod(app.config["FACE_FOLDER"])
+            if not os.path.exists(config.FACE_FOLDER):
+                os.makedirs(config.FACE_FOLDER)
+                os.chmod(config.FACE_FOLDER)
+            user.face = change_name(file_face)
+            form.face.data.save(config.FACE_FOLDER + user.face)
+
+        name_count = User.query.filter_by(name=data['name']).count()
+        if data['name'] != user.name and name_count == 1:
+            flash("用户名已经存在", 'err')
+            return redirect(url_for('home.user'))
+
+        email_count = User.query.filter_by(email=data['email']).count()
+        if data['email'] != user.email and email_count == 1:
+            flash("邮箱已经存在", 'err')
+            return redirect(url_for('home.user'))
+
+        phone_count = User.query.filter_by(phone=data['phone']).count()
+        if data['phone'] != user.phone and phone_count == 1:
+            flash("手机号码已经存在", 'err')
+            return redirect(url_for('home.user'))
+
+        card_count = User.query.filter_by(card=data['card']).count()
+        if data['card'] != user.card and card_count == 1:
+            flash("银行卡号码已经存在", 'err')
+            return redirect(url_for('home.user'))
 
         user.name = data['name']
         user.email = data['email']
         user.phone = data['phone']
+        user.card = data['card']
+        user.info = data['info']
+        user.address = data['address']
 
         db.session.add(user)
         try:

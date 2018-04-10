@@ -7,14 +7,14 @@ from werkzeug.security import check_password_hash
 
 
 # 实例化app
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:177036@127.0.0.1:3306/shop"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+appm = Flask(__name__)
+appm.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:177036@127.0.0.1:3306/shop"
+appm.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+db = SQLAlchemy(appm)
+migrate = Migrate(appm, db)
 
-manager = Manager(app)
+manager = Manager(appm)
 manager.add_command('db', MigrateCommand)
 
 
@@ -37,6 +37,8 @@ class User(db.Model):
     face = db.Column(db.String(255))
     # 收货地址
     address = db.Column(db.String(255))
+    # 个人简介
+    info = db.Column(db.Text)
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 会员登录日志关系外联
