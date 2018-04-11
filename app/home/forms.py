@@ -280,6 +280,11 @@ class AdminLoginForm(FlaskForm):
             DataRequired("管理员账号不能为空")
         ],
         description="管理员登录",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入你的用户名",
+        }
+
     )
 
     password = PasswordField(
@@ -287,7 +292,19 @@ class AdminLoginForm(FlaskForm):
         validators=[
             DataRequired("密码不能为空")
         ],
-        description="密码"
+        description="密码",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入你的密码",
+        }
+
+    )
+
+    submit = SubmitField(
+        '登录',
+        render_kw={
+            "class": "btn btn-success btn-lg active"
+        }
     )
 
     def validate_login(self, field):
@@ -309,12 +326,23 @@ class RegistrationForm(FlaskForm):
         validators=[
             DataRequired("登录名不能为空")
         ],
-        description="管理员注册"
+        description="管理员注册",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入你的登录名",
+        }
     )
 
     email = StringField(
         label="邮箱名",
-        description="管理员注册邮箱"
+        validators=[
+            DataRequired("邮箱不能为空")
+        ],
+        description="管理员注册邮箱",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入你的邮箱",
+        }
     )
 
     password = PasswordField(
@@ -322,7 +350,18 @@ class RegistrationForm(FlaskForm):
         validators=[
             DataRequired("密码不能为空")
         ],
-        description="管理员密码"
+        description="管理员密码",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入你的密码",
+        }
+    )
+
+    submit = SubmitField(
+        '注册',
+        render_kw={
+            "class": "btn btn-success btn-lg active"
+        }
     )
 
     def validate_login(self, field):

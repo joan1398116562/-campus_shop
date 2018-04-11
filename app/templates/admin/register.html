@@ -1,12 +1,12 @@
-{% extends "home/base.html" %}
+{% extends 'admin/master.html' %}
+{% block body %}
 
-{% block content %}
-    <div class="container">
+  <div class="jumbotron">
       <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <div class="panel panel-warning">
+        <div class="col-md-12">
+            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><span class="fas fa-user-circle"></span>&nbsp;会员登录</h3>
+                    <h3 class="panel-title"><span class="fas fa-user-circle"></span>&nbsp;管理员注册</h3>
                 </div>
                 <div class="panel-body">
                     {% for msg in get_flashed_messages(category_filter=["err"])%}
@@ -24,24 +24,37 @@
                             {{ msg }}
                         </div>
                     {% endfor %}
-
+{#                    {{ form.hidden_tag }}#}
                     <form role="form" method="post">
                         <fieldset>
                             <div class="form-group" style="font-size: large">
-                                <label for="input_contact"><span class="glyphicon glyphicon-user btn-lg"></span>
-                                    {{ form.name.label }}</label>
-                                {{ form.name }}
-                                {% for error in form.name.errors %}
+                                <label for="login"><span class="glyphicon glyphicon-user btn-lg"></span>
+                                    {{ form.login.label }}</label>
+                                {{ form.login() }}
+                                {% for error in form.login.errors %}
                                     <div class="col-md-12">
                                     <p style="color: red">{{ error }}</p>
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="col-md-12" id="error_contact"></div>
+                            <div class="col-md-12" id="error_login"></div>
+
                             <div class="form-group" style="font-size: large">
-                                <label for="input_password"><span class="glyphicon glyphicon-lock btn-lg"></span>
+                                <label for="email"><span class="glyphicon glyphicon-envelope btn-lg"></span>
+                                    {{ form.email.label }}</label>
+                                {{ form.email() }}
+                                {% for error in form.email.errors %}
+                                    <div class="col-md-12">
+                                    <p style="color: red">{{ error }}</p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-12" id="error_login"></div>
+
+                            <div class="form-group" style="font-size: large">
+                                <label for="password"><span class="glyphicon glyphicon-lock btn-lg"></span>
                                    {{ form.password.label }}</label>
-                                {{ form.password }}
+                                {{ form.password() }}
                                 {% for error in form.password.errors %}
                                     <div class="col-md-12">
                                     <p style="color: red">{{ error }}</p>
@@ -51,12 +64,13 @@
                             <div class="col-md-12" id="error_password"></div>
                             {{ form.csrf_token }}
                            {{ form.submit }}
+                            <a href={{ url_for('admin.login_view') }}><button type="button" class="btn btn-lg btn-success" style="margin-left: 8em
+">已有账号，登录</button></a>
                         </fieldset>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+  </div>
 {% endblock %}
-

@@ -57,6 +57,8 @@ flask-login
 
 def init_login():
     login_manager = login.LoginManager()
+    login_manager.login_view = 'adminuser.login'
+    login_manager.login_message = u'请登录'
     login_manager.init_app(app)
 
     # 创建管理员加载函数
@@ -97,6 +99,7 @@ class MyModelView(sqla.ModelView):
 
 # 创建定制的flask-admin主页视图(注册和登录逻辑):
 class MyAdminIndexView(admin.AdminIndexView):
+
     @expose('/')
     def index(self):
         if not login.current_user.is_authenticated:
@@ -114,10 +117,10 @@ class MyAdminIndexView(admin.AdminIndexView):
 
         if login.current_user.is_authenticated:
             return redirect(url_for('.index'))
-        link = '<p>还没有账户？ <a href="' + url_for('.register_view') + '">点击这里注册</a></p>'
-        self._template_args['form'] = form
-        self._template_args['link'] = link
-        return super(MyAdminIndexView, self).index()
+        # link = '<p>还没有账户？ <a href="' + url_for('.register_view') + '">点击这里注册</a></p>'
+        # self._template_args['form'] = form
+        # self._template_args['link'] = link
+        return self.render("admin/login.html", form=form)
 
     @expose('/register/', methods=('GET', 'POST'))
     def register_view(self):
@@ -142,7 +145,7 @@ class MyAdminIndexView(admin.AdminIndexView):
         link = '<p>已经有账户了? <a href="' + url_for('.login_view') + '">点击这里登录.</a></p>'
         self._template_args['form'] = form
         self._template_args['link'] = link
-        return super(MyAdminIndexView, self).index()
+        return self.render("admin/register.html", form=form)
 
     @expose('/logout/')
     def logout_view(self):
@@ -162,6 +165,9 @@ class UserAdmin(sqla.ModelView):
     """
     用户管理视图
     """
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     can_create = False
     can_edit = False
     can_delete = False
@@ -190,6 +196,9 @@ class ProductAdmin(sqla.ModelView):
     """
     商品管理视图
     """
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     column_display_pk = True
     column_list = ('id', 'name', 'price', 'stock', 'sell')
     column_labels = {
@@ -198,11 +207,12 @@ class ProductAdmin(sqla.ModelView):
         'price': u'价格',
         'stock': u'库存',
         'sell': u'销量',
+        'add_time': u'添加时间',
         'tag_id': u'分类',
         'tag': u'所属分类',
         'comments': u'评论'
     }
-    form_excluded_columns = ['comments']
+    form_excluded_columns = ['comments', 'pic']
 
     column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id')
 
@@ -232,6 +242,9 @@ class UserlogAdmin(sqla.ModelView):
     """
     用户登录日志视图
     """
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     can_create = False
     can_edit = False
     can_delete = False
@@ -252,6 +265,10 @@ class TagAdmin(sqla.ModelView):
     """
     商品分类管理视图
     """
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     column_list = ('name', 'add_time', 'products')
 
     column_labels = {
@@ -269,6 +286,10 @@ class CommentAdmin(sqla.ModelView):
     """
     评论管理视图
     """
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     can_delete = False
     can_edit = False
     can_create = False
@@ -289,8 +310,6 @@ admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3',
 _master.html')
 
 admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
-
-
 admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
 admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户日志管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))

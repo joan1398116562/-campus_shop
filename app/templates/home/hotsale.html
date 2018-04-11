@@ -1,0 +1,18 @@
+{% extends 'home/base.html' %}
+{% import 'home/page.html' as pg %}
+{% block content %}
+      <div class="container">
+        <div class="row wow fadeIn" data-wow-delay="0.6s">
+        <div class="col-md-12">
+            <div class="col-md-2">热销商品</div>
+            <div class="col-md-10">
+                <a href="{{ url_for('home.hot_sale',page=1) }}?sell{{ p['sell'] }}"
+                   class="label label-important"><span class="fa fa-fire"></span>热销</a>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-12">
+                {{ pg.page(page_data,'home.hot_sale') }}
+            </div>
+    </div>
+{% endblock %}

@@ -4,7 +4,7 @@
 <div class="jumbotron">
     <div>
         {% if current_user.is_authenticated %}
-        <h1 class="center-block">校园商铺管理系统</h1>
+        <h1 class="center-block well text-center text-success">校园商铺管理系统</h1>
         <p class="text-success">
             欢迎进入校园商铺后台管理系统
         </p>
@@ -24,7 +24,6 @@
             {% endif %}
             </div>
             {% endfor %}
-            <button class="btn" type="submit">确认</button>
         </form>
         {{ link | safe }}
         {% endif %}
@@ -40,6 +39,6 @@
     <span class="sr-only"></span>
   </div>
     </div>
-    <a class="btn btn-primary btn-lg active" href="/"><i class="fas fa-check"></i>返回</a>
+
 </div>
 {% endblock body %}

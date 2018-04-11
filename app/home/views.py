@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 
 from . import home
 from flask import render_template, redirect, url_for, flash, session, request
-
 from werkzeug.security import generate_password_hash
 
 from app import db, config
@@ -238,6 +237,25 @@ def index(page=None):
         sell=sell,
     )
     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
+
+
+@home.route("/<int:page>/", methods=['GET'])
+@home.route("/hotsale/", methods=['GET'])
+def hot_sale(page=None):
+    page_data = Product.query
+    sell = request.args.get("sell", 0)
+    if int(sell) != 0:
+        if int(sell) == 1:
+            page_data = page_data.order_by(Product.sell.desc())
+        else:
+            page_data = page_data.order_by(Product.sell.asc())
+    if page is None:
+        page = 1
+    page_data = page_data.paginate(page=page, per_page=8)
+    p = dict(
+        sell=sell,
+    )
+    return render_template("home/hotsale.html", p=p, page_data=page_data)
 
 
 @home.route("/order/", methods=['GET'])
