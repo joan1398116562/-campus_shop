@@ -34,7 +34,8 @@ from home.forms import AdminLoginForm, RegistrationForm
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")  # 上传文件路径
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-file_path = op.join(op.dirname(__file__), 'static/uploads/products/')  # 商品文件上传路径
+# file_path = op.join(op.dirname(__file__), 'static/uploads/products/')  # 商品文件上传路径
+file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/products")
 
 app = Flask(__name__)
 
@@ -46,6 +47,13 @@ app.config['FACE_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file_
 app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'  # 修改后台翻译为中文
 
 app.config.from_object('config')
+
+
+def product_root():
+    return file_path
+
+
+app.jinja_env.globals.update(product_root=product_root)
 
 """
 flask-login
@@ -193,7 +201,7 @@ class ProductAdmin(sqla.ModelView):
         return login.current_user.is_authenticated
 
     column_display_pk = True
-    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time')
+    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time', 'pic')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
@@ -205,7 +213,8 @@ class ProductAdmin(sqla.ModelView):
         'add_time': u'添加时间',
         'tag_id': u'分类',
         'tag': u'所属分类',
-        'comments': u'评论'
+        'comments': u'评论',
+        'pic': u'图片',
     }
     form_excluded_columns = ['comments', 'pic']
 
@@ -215,23 +224,39 @@ class ProductAdmin(sqla.ModelView):
 
     # 设置缩略图
     def _list_thumbnail(view, context, model, name):
-        if not model.head_img:
+        if not model.pic:
             return ''
         return Markup(
-            '<img src="%s">' % url_for('static/uploads/products',
-                                       filename=form.thumbgen_filename(model.head_img)))
-
+            '<img src="%s">' % url_for('static', filename=form.thumbgen_filename(model.pic)))
+        print(filename)
     # 格式化列表图像显示
     column_formatters = {
-        'head_img': _list_thumbnail
+        'pic': _list_thumbnail
     }
     # 扩展列表显示的头像为60*60像素
     form_extra_fields = {
-        'head_img': form.ImageUploadField(u'图像',
-                                          base_path=file_path,
-                                          relative_path='uploadFile/',
-                                          thumbnail_size=(60, 60, True))
+        'pic': form.ImageUploadField(label=u'图像',
+                                     base_path=file_path,
+                                     relative_path="uploads/products/uploadFile/",
+                                     thumbnail_size=(60, 60, True)
+                                     )
     }
+
+    @listens_for(Product, 'after_delete')
+    def del_image(mapper, connection, target):
+        if target.pic:
+            # 删除图片
+            try:
+                os.remove(op.join(file_path, target.pic))
+            except OSError:
+                flash("删除图片出错")
+
+
+            try:
+                os.remove(op.join(file_path,
+                                  form.thumbgen_filename(target.pic)))
+            except OSError:
+                flash("删除缩略图出错")
 
 
 class UserlogAdmin(sqla.ModelView):

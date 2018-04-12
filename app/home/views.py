@@ -28,7 +28,7 @@ def allowed_file(filename):
 
 def change_name(filename):
     """
-    修改文件夹名称
+    修改文件名称
     """
     file_info = os.path.splitext(filename)
     filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + file_info[-1]
@@ -240,25 +240,6 @@ def index(page=None):
     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
 
 
-# @home.route("/<int:page>/", methods=['GET'])
-# @home.route("/hotsale/", methods=['GET'])
-# def hot_sale(page=None):
-#     page_data = Product.query
-#     sell = request.args.get("sell", 0)
-#     if int(sell) != 0:
-#         if int(sell) == 1:
-#             page_data = page_data.order_by(Product.sell.desc())
-#         else:
-#             page_data = page_data.order_by(Product.sell.asc())
-#     if page is None:
-#         page = 1
-#     page_data = page_data.paginate(page=page, per_page=8)
-#     p = dict(
-#         sell=sell,
-#     )
-#     return render_template("home/hotsale.html", p=p, page_data=page_data)
-
-
 @home.route("/hot_sale/", methods=['GET'])
 def hot_sale():
     # hots = Product.query.order_by('sell desc').all()
@@ -273,5 +254,8 @@ def hot_sale():
 @home.route("/order/", methods=['GET'])
 def order():
     return render_template("home/order.html")
+
+
+
 
 
