@@ -117,9 +117,6 @@ class MyAdminIndexView(admin.AdminIndexView):
 
         if login.current_user.is_authenticated:
             return redirect(url_for('.index'))
-        # link = '<p>还没有账户？ <a href="' + url_for('.register_view') + '">点击这里注册</a></p>'
-        # self._template_args['form'] = form
-        # self._template_args['link'] = link
         return self.render("admin/login.html", form=form)
 
     @expose('/register/', methods=('GET', 'POST'))
@@ -141,10 +138,6 @@ class MyAdminIndexView(admin.AdminIndexView):
 
             login.login_user(adminuser)
             return redirect(url_for('.index'))
-
-        link = '<p>已经有账户了? <a href="' + url_for('.login_view') + '">点击这里登录.</a></p>'
-        self._template_args['form'] = form
-        self._template_args['link'] = link
         return self.render("admin/register.html", form=form)
 
     @expose('/logout/')
@@ -200,13 +193,15 @@ class ProductAdmin(sqla.ModelView):
         return login.current_user.is_authenticated
 
     column_display_pk = True
-    column_list = ('id', 'name', 'price', 'stock', 'sell')
+    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
         'price': u'价格',
+        'old_price': u'原价',
         'stock': u'库存',
         'sell': u'销量',
+        'view_num': u'浏览量',
         'add_time': u'添加时间',
         'tag_id': u'分类',
         'tag': u'所属分类',
@@ -214,7 +209,7 @@ class ProductAdmin(sqla.ModelView):
     }
     form_excluded_columns = ['comments', 'pic']
 
-    column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id')
+    column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id', 'view_num')
 
     column_searchable_list = ['name', 'id', 'price', 'stock', 'sell', 'tag_id']
 
@@ -223,7 +218,8 @@ class ProductAdmin(sqla.ModelView):
         if not model.head_img:
             return ''
         return Markup(
-            '<img src="%s">' % url_for('static/uploads/products', filename=form.thumbgen_filename(model.head_img)))
+            '<img src="%s">' % url_for('static/uploads/products',
+                                       filename=form.thumbgen_filename(model.head_img)))
 
     # 格式化列表图像显示
     column_formatters = {

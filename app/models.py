@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, BaseQuery
 from datetime import datetime
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
@@ -79,6 +79,8 @@ class Product(db.Model):
     name = db.Column(db.String(255), unique=True)
     # 价格
     price = db.Column(db.Float)
+    # 原价
+    old_price = db.Column(db.Float)
     # 库存
     stock = db.Column(db.Integer)
     # 销量
@@ -87,6 +89,8 @@ class Product(db.Model):
     pic = db.Column(db.String(255), unique=True)
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    # 商品浏览量
+    view_num = db.Column(db.Integer, default=0)
     # 商品所属分类
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
     # 商品评论外键关系关联
@@ -154,6 +158,9 @@ class AdminUser(db.Model):
 
     def __repr__(self):
         return "<Administrator %r>" % self.name
+#
+# class ProductQuery(BaseQuery):
+#     def getproduct_id(self, id):
 
 
 if __name__ == '__main__':
