@@ -2,25 +2,6 @@
 {% import 'home/page.html' as pg %}
 {% import 'home/show.html' as show %}
 {% block content %}
-{#      <div class="container">#}
-{#        <div class="row wow fadeIn" data-wow-delay="0.6s">#}
-{#        <div class="col-md-12">#}
-{#            <div class="col-md-2">热销商品</div>#}
-{#            <div class="col-md-10">#}
-{#                <a href="{{ url_for('home.hot_sale',page=1) }}"#}
-{#                   class="label label-important"><span class="fa fa-fire"></span>热销</a>#}
-{#            </div>#}
-{#            <div class="col-md-10">#}
-{#                {% for hot in hots %}#}
-{#                    {{ hot.name }}#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#        </div>#}
-{#        </div>#}
-{#        <div class="col-md-12">#}
-{#                {{ pg.page(page_data,'home.hot_sale') }}#}
-{#            </div>#}
-{#    </div>#}
 <div class="product-easy">
 	<div class="container">
 
@@ -50,8 +31,6 @@
 	</div>
 </div>
     <div class="container">
-
-
         <div class="col-md-12">
                 {{ pg.page(page_data,'home.hot_sale') }}
             </div>
