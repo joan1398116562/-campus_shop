@@ -35,7 +35,7 @@ UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # file_path = op.join(op.dirname(__file__), 'static/uploads/products/')  # 商品文件上传路径
-file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/products")
+file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static")
 
 app = Flask(__name__)
 
@@ -228,7 +228,6 @@ class ProductAdmin(sqla.ModelView):
             return ''
         return Markup(
             '<img src="%s">' % url_for('static', filename=form.thumbgen_filename(model.pic)))
-        print(filename)
     # 格式化列表图像显示
     column_formatters = {
         'pic': _list_thumbnail
@@ -237,7 +236,7 @@ class ProductAdmin(sqla.ModelView):
     form_extra_fields = {
         'pic': form.ImageUploadField(label=u'图像',
                                      base_path=file_path,
-                                     relative_path="uploads/products/uploadFile/",
+                                     relative_path="uploadFile/",
                                      thumbnail_size=(60, 60, True)
                                      )
     }

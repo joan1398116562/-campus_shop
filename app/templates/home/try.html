@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for p in pic %}
+    <img src="/static/uploads/products/{{ p.pic }}">
+{% endfor %}
+</body>
+</html>

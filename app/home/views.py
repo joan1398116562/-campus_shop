@@ -245,15 +245,39 @@ def hot_sale():
     # hots = Product.query.order_by('sell desc').all()
     page = request.args.get("page", 1, type=int)
     page_data = Product.query.order_by(Product.sell.desc())
-    page_data = page_data.paginate(page=page, per_page=2, error_out=False)
+    page_data = page_data.paginate(page=page, per_page=8, error_out=False)
     hots = page_data.items
     # print(hots)
     return render_template("home/hotsale.html", hots=hots, page_data=page_data, page=page)
+
+#
+# @home.route("/product_list/", methods=['GET'])
+# def product_list():
+#
+
+
+@home.route('/detail/<product_id>/')
+def detail(product_id):
+    product = Product.query.filter(Product.id == product_id).first()
+    return render_template('home/detail.html', product=product)
+
+# @home.route("/detail/", methods=['GET'])
+# def detail(id):
+#     product = Product.query.filter_by(id=id).first()
+#
+#     return render_template("home/detail.html", product=product)
 
 
 @home.route("/order/", methods=['GET'])
 def order():
     return render_template("home/order.html")
+
+
+@home.route("/try/", methods=['GET'])
+def try_do():
+    pic = Product.query.order_by(Product.sell.desc()).all()
+
+    return render_template("home/try.html", pic=pic)
 
 
 
