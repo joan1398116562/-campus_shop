@@ -258,16 +258,16 @@ def index(page=None):
 #     )
 #     return render_template("home/hotsale.html", p=p, page_data=page_data)
 
-@home.route("/<int:page>/", methods=['GET'])
+
 @home.route("/hot_sale/", methods=['GET'])
-def hot_sale(page=None):
+def hot_sale():
     # hots = Product.query.order_by('sell desc').all()
     page = request.args.get("page", 1, type=int)
     page_data = Product.query.order_by(Product.sell.desc())
     page_data = page_data.paginate(page=page, per_page=2, error_out=False)
     hots = page_data.items
-    print(hots)
-    return render_template("home/hotsale.html", hots=hots, page_data=page_data)
+    # print(hots)
+    return render_template("home/hotsale.html", hots=hots, page_data=page_data, page=page)
 
 
 @home.route("/order/", methods=['GET'])
