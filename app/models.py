@@ -37,6 +37,8 @@ class User(db.Model):
     face = db.Column(db.String(255))
     # 收货地址
     address = db.Column(db.String(255))
+    # 收货学校以及楼层
+    location = db.Column(db.String(255))
     # 个人简介
     info = db.Column(db.Text)
     # 添加时间
@@ -91,6 +93,8 @@ class Product(db.Model):
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 商品浏览量
     view_num = db.Column(db.Integer, default=0)
+    # 商品描述
+    description = db.Column(db.Text)
     # 商品所属分类
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
     # 商品评论外键关系关联

@@ -124,6 +124,7 @@ def user():
         form.card.data = user.card
         form.info.data = user.info
         form.address.data = user.address
+        form.location.data = user.location
     if form.validate_on_submit():
         data = form.data
         if form.face.data != "":
@@ -160,6 +161,7 @@ def user():
         user.card = data['card']
         user.info = data['info']
         user.address = data['address']
+        user.location = data['location']
 
         db.session.add(user)
         try:
@@ -258,8 +260,8 @@ def hot_sale():
 
 @home.route('/detail/<product_id>/')
 def detail(product_id):
-    product = Product.query.filter(Product.id == product_id).first()
-    return render_template('home/detail.html', product=product)
+    product_model = Product.query.filter(Product.id == product_id).first()
+    return render_template('home/detail.html', product=product_model)
 
 # @home.route("/detail/", methods=['GET'])
 # def detail(id):

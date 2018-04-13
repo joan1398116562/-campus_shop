@@ -182,15 +182,16 @@ class UserAdmin(sqla.ModelView):
         'card': u'银行卡',
         'face': u'头像',
         'address': u'收货地址',
+        'location': u'学校楼层',
         'add_time': u'添加时间',
         'comments': u'评论'
     }
 
-    column_list = ('id', 'name', 'email', 'phone', 'card', 'face', 'address', 'add_time')
+    column_list = ('id', 'name', 'email', 'phone', 'card', 'face', 'address', 'location', 'add_time')
 
     column_filters = ('name', 'phone', 'address', 'add_time')
 
-    column_searchable_list = ['name', 'email', 'phone']
+    column_searchable_list = ['name', 'email', 'phone', 'address', 'location']
 
 
 class ProductAdmin(sqla.ModelView):
@@ -201,7 +202,8 @@ class ProductAdmin(sqla.ModelView):
         return login.current_user.is_authenticated
 
     column_display_pk = True
-    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time', 'pic')
+    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time', 'pic',
+                   'description')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
@@ -211,6 +213,7 @@ class ProductAdmin(sqla.ModelView):
         'sell': u'销量',
         'view_num': u'浏览量',
         'add_time': u'添加时间',
+        'description': u'商品描述',
         'tag_id': u'分类',
         'tag': u'所属分类',
         'comments': u'评论',
@@ -220,7 +223,7 @@ class ProductAdmin(sqla.ModelView):
 
     column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id', 'view_num')
 
-    column_searchable_list = ['name', 'id', 'price', 'stock', 'sell', 'tag_id']
+    column_searchable_list = ['name', 'id', 'price', 'stock', 'sell', 'tag_id', 'description']
 
     # 设置缩略图
     def _list_thumbnail(view, context, model, name):

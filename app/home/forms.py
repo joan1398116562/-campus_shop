@@ -218,6 +218,18 @@ class UserForm(FlaskForm):
         }
     )
 
+    location = StringField(
+        label="学校楼层",
+        validators=[
+            DataRequired("请填写你的学校与宿舍楼层")
+        ],
+        description="学校楼层",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请填写学校与宿舍楼层",
+        }
+    )
+
     info = TextAreaField(
         label="简介",
         description="简介",

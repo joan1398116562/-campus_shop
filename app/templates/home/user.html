@@ -115,7 +115,20 @@
                     <div class="col-md-12" id="error_address"></div>
 
                     <div class="form-group">
-                        <label for="input_info"><span class="fas fa-pen-square"></span>{{ form.info.label }}</label>
+                        <label for="user_location">
+                            <span class="fas fa-location-arrow"></span>{{ form.location.label }}
+                        </label>
+                        {{ form.location }}
+
+                        {% for error in form.location.errors %}
+                            <div class="col-md-12">
+                                <p style="color:red;">{{ error }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-12" id="error_location"></div>
+                    <div class="form-group">
+                        <label for="user_info"><span class="fas fa-pen-square"></span>{{ form.info.label }}</label>
 {#                        <textarea class="form-control" rows="10" id="input_info"></textarea>#}
                         {{ form.info }}
                         {% for error in form.info.errors %}
