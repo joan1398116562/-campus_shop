@@ -312,9 +312,12 @@ label{
 
 .menu--shylock .menu__item--current .menu__link,
 .menu--shylock .menu__item--current .menu__link:hover,
-.menu--shylock .menu__item--current .menu__link:focus {
+.menu--shylock .menu__item--current .menu__link:focus
+{
 	color: #d94f5c;
 }
+
+
 
 .menu--shylock .menu__item--current .menu__link::after,
 .menu--shylock .menu__item--current .menu__link::before {

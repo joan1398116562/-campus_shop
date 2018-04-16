@@ -208,38 +208,47 @@ def logout():
     return redirect(url_for('home.login'))
 
 
-@home.route("/<int:page>/", methods=['GET'])
-@home.route("/", methods=["GET"])
-def index(page=None):
-    tags = Tag.query.all()
-    page_data = Product.query
-    # 分类
-    tid = request.args.get("tid", 0)
-    if int(tid) != 0:
-        page_data = page_data.filter_by(tag_id=int(tid))
-    # 时间
-    time = request.args.get("time", 0)
-    if int(time) != 0:
-        if int(time) == 1:
-            page_data = page_data.order_by(Product.add_time.desc())
-        else:
-            page_data = page_data.order_by(Product.add_time.asc())
-    # 销量
-    sell = request.args.get("sell", 0)
-    if int(sell) != 0:
-        if int(sell) == 1:
-            page_data = page_data.order_by(Product.sell.desc())
-        else:
-            page_data = page_data.order_by(Product.sell.asc())
-    if page is None:
-        page = 1
-    page_data = page_data.paginate(page=page, per_page=8)
-    p = dict(
-        tid=tid,
-        time=time,
-        sell=sell,
-    )
-    return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
+# @home.route("/<int:page>/", methods=['GET'])
+# @home.route("/", methods=["GET"])
+# def index(page=None):
+#     tags = Tag.query.all()
+#     page_data = Product.query
+#     # 分类
+#     tid = request.args.get("tid", 0)
+#     if int(tid) != 0:
+#         page_data = page_data.filter_by(tag_id=int(tid))
+#     # 时间
+#     time = request.args.get("time", 0)
+#     if int(time) != 0:
+#         if int(time) == 1:
+#             page_data = page_data.order_by(Product.add_time.desc())
+#         else:
+#             page_data = page_data.order_by(Product.add_time.asc())
+#     # 销量
+#     sell = request.args.get("sell", 0)
+#     if int(sell) != 0:
+#         if int(sell) == 1:
+#             page_data = page_data.order_by(Product.sell.desc())
+#         else:
+#             page_data = page_data.order_by(Product.sell.asc())
+#     if page is None:
+#         page = 1
+#     page_data = page_data.paginate(page=page, per_page=8)
+#     p = dict(
+#         tid=tid,
+#         time=time,
+#         sell=sell,
+#     )
+#     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
+
+@home.route("/", methods=['GET'])
+def index():
+    # page_new = request.args.get("page", 1, type=int)
+    # page_new_data = Product.query.order_by(Product.add_tim  e.desc()).limit()
+    # page_new_data = page_new_data.paginate(page=page_new, per_page=8, error_out=False)
+    # news = page_new_data.items
+    news = Product.query.order_by(Product.add_time.desc()).limit(10)
+    return render_template("home/index.html", news=news)
 
 
 @home.route("/hot_sale/", methods=['GET'])
@@ -252,10 +261,8 @@ def hot_sale():
     # print(hots)
     return render_template("home/hotsale.html", hots=hots, page_data=page_data, page=page)
 
-#
-# @home.route("/product_list/", methods=['GET'])
-# def product_list():
-#
+
+
 
 
 @home.route('/detail/<product_id>/')
