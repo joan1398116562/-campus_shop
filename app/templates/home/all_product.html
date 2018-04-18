@@ -1,10 +1,8 @@
 {% extends "home/base.html" %}
-{% import "home/page.html" as pg %}
+{% import 'home/page.html' as pg %}
 {% block content %}
-    <div class="container">
-        <h3>全部结果》{{ tag.name }}</h3>
-        <div class="product-easy">
-	        <div class="container">
+<div class="product-easy">
+	<div class="container">
 
 		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -20,13 +18,13 @@
 		<div class="sap_tabs">
 			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
 				<ul class="resp-tabs-list">
-					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>新品上架</span></li>
+					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>所有商品</span></li>
 				</ul>
 			</div>
-            {% for product in product_cate %}
+            {% for product in products %}
             <div class="col-md-3 product-men">
 							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item" style="border-top-style: solid;border-top-color: #FDA30E ;">
+								<div class="men-thumb-item">
 									<img width="200" height="200" src="/static/{{ product.pic }}" alt="" class="pro-image-front">
 									<img width="200" height="200" src="/static/{{ product.pic }}" alt="" class="pro-image-back">
 
@@ -35,12 +33,13 @@
 												<a href="{{ url_for('home.detail', product_id=product.id) }}" class="link-product-add-cart">Quick View</a>
 											</div>
 										</div>
-										<span class="product-new-top">{{ tag.name }}</span>
+										<span class="product-new-top fas fa-cart-arrow-down fa-2x" style="color: #FDA30E"></span>
 
 								</div>
 								<div class="item-info-product ">
-									<h4><a href="single.html">{{ product.name }}</a></h4>
+									<h4><a href="{{ url_for('home.detail', product_id=product.id) }}">{{ product.name }}</a></h4>
 									<div class="info-product-price">
+                                        <span>售价:</span>
 										<span class="item_price">￥{{ product.price }}</span>
 									</div>
 									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
@@ -53,9 +52,7 @@
 </div>
     <div class="container">
         <div class="col-md-12">
-                {{ pg.page(page_data,'home.category') }}
+                {{ pg.page(page_data,'home.all_product') }}
             </div>
     </div>
-    </div>
-
 {% endblock %}

@@ -1331,6 +1331,17 @@ h2.resp-accordion {
     top: 0;
     z-index: 10;
 }
+.product-new-top-all{
+    background: #ffffff none repeat scroll 0 0;
+    color: #fff;
+    display: inline-block;
+    right: 0;
+    padding: 0 10px 1px;
+    position: absolute;
+    text-transform: lowercase;
+    top: 0;
+    z-index: 10;
+}
 .inner-men-cart-pro {
     height: 100%;
     position: relative;

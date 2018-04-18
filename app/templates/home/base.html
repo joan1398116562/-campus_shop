@@ -9,6 +9,8 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/shop.png') }}">
     <link href="{{ url_for('static', filename='base/css/bootstrap.css') }}" rel="stylesheet" type="text/css"
           media="all"/>
+    <link href="{{ url_for('static', filename='base/css/bootstrap-theme.css') }}" rel="stylesheet" type="text/css"
+          media="all"/>
     <link href="{{ url_for('static', filename='base/css/style.css') }}" rel="stylesheet" type="text/css" media="all">
     <link href="{{ url_for('static', filename='base/css/styles.css') }}" rel="stylesheet" type="text/css" media="all">
     <link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css"
@@ -16,6 +18,7 @@
     <script src="{{ url_for('static', filename='base/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ url_for('static', filename='base/js/simpleCart.min.js') }}"></script>
     <script src="{{ url_for('static', filename='base/js/bootstrap.min.js') }}"></script>
+
     <link href="{{ url_for('static', filename='base/css/pignose.layerslider.css') }} " rel="stylesheet" type="text/css"
           media="all">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
@@ -29,25 +32,25 @@
     <script>
         new WOW().init();
     </script>
+    <script>
+        $(document).ready(function () {
+            $("li.menu__item").removeClass("menu__item-current");
+        })
+
+    </script>
     {% block css %}
     {% endblock css %}
 </head>
 
 <body>
 <!-- 导航条-->
-    <script>
-
-    function good() {
-        $(this).parent().addClass("menu__item--current");
-    }
-
-    </script>
-    <div class="container">
-        <div class="logo-nav">
+    <div class="container-fluid">
+        <div class="col-md-1"></div>
+        <div class="logo-nav col-md-10">
             <div class="logo-nav-left wow zoomIn" data-wow-delay="0.5s" style="margin-left: 25px">
-                <h1><a href="base.html">Campus Shop<span>畅快购物</span></a></h1>
+                <h1><a href="{{ url_for('home.index') }}">Campus Shop<span>畅快购物</span></a></h1>
             </div>
-            <div class="logo-nav-left1 animated zoomIn">
+            <div class="logo-nav-left1 animated zoomIn" style="margin-left: 20em;">
                 <!--导航按钮和logo适应移动设备-->
                 <nav class="navbar navbar-default">
                     <div class="navbar-header nav_2">
@@ -70,21 +73,22 @@
             </ul>
               <form class="navbar-form navbar-left" role="search" style="margin-top: 1em; margin-left: 2em">
                 <div class="form-group input-group">
-                    <input type="text" class="form-control" placeholder="请输入商品名！" id="key_movie">
+                    <input type="text" class="form-control" placeholder="请输入商品名！" id="key_product">
                     <span class="input-group-btn">
                         <a class="btn btn-default" id="do_search"><span class="fas fa-search"></span>&nbsp;搜索</a>
                     </span>
                 </div>
             </form></div>
         </nav>
-        <!--导航-->
-
     </div>
             <div class="clearfix"></div>
         </div>
     </div>
-<div class="ban-top" style="margin-bottom: 40px">
-    <div class="container">
+<!--导航条结束-->
+    <div class="ban-top" style="margin-bottom: 40px">
+    <div class="container-fluid">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
         <div class="top_nav_left">
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
@@ -101,12 +105,13 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav menu__list">
-                            <li class="active menu__item--current menu__item"><a class="menu__link" href="{{ url_for('home.index') }}"><span class="menu--span">首页</span>
+                            <li class="menu__item" id="category-side"><a href="{{ url_for('home.index') }}" class="menu__link">所有分类</a></li>
+                            <li class="active menu__item"><a class="menu__link" href="{{ url_for('home.index') }}"><span class="menu--span">首页</span>
                                 <span class="sr-only">(current)</span></a></li>
-                            <li class="menu__item menu__item--current"><a class="menu__link" href="{{ url_for('home.hot_sale') }}" style="margin-left: 1em
+                            <li class="menu__item"><a class="menu__link" href="{{ url_for('home.hot_sale') }}" style="margin-left: 1em
 ">热销</a></li>
                             <li class="menu__item"><a class="menu__link"  href="electronics.html"><span class="menu--span">推荐</span></a></li>
-                            <li class="menu__item"><a class="menu__link " href="contact.html" onclick="good()"><span class="menu--span">分类</span></a></li>
+                            <li class="menu__item"><a class="menu__link " href="{{ url_for('home.new_product') }}" onclick="good()"><span class="menu--span">新品</span></a></li>
                             <li class="menu__item"><a class="menu__link" href="{{ url_for('home.login') }}" onclick="good()"><span class="menu--span">登录</span></a></li>
                             <li class="menu__item"><a class="menu__link" href="{{ url_for('home.register') }}"><span class="menu--span">注册</span></a></li>
                         </ul>
@@ -130,6 +135,7 @@
 
             </div>
         </div>
+        </div>
         <div class="clearfix"></div>
     </div>
 </div>
@@ -144,7 +150,8 @@
 <!--内容-->
 
 <!-- 底部 -->
-<div class="footer" style="margin-top: 40px">
+
+<div class="footer" style="margin-top: 40px;">
     <div class="container">
         <div class="footer-logo animated wow slideInUp" data-wow-delay=".5s">
             <h2><a href="base.html">校园商铺<span>爽快购物</span></a></h2>
@@ -154,9 +161,22 @@
         </div>
     </div>
 </div>
+
 <script src="{{ url_for('static', filename='base/js/jquery.lazyload.min.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $("#do_search").click(function () {
+            var key = $("#key_product").val();
+            location.href = "{{ url_for('home.search', page=1) }}?key=" + key
+        });
+    });
+</script>
 <!-- 底部结束 -->
+
+<!--js代码块-->
 {% block js %}
 {% endblock js %}
+<!--js代码块结束-->
+
 </body>
 </html>

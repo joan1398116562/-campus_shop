@@ -88,7 +88,7 @@ class Product(db.Model):
     # 销量
     sell = db.Column(db.Integer, default=0)
     # 图片
-    pic = db.Column(db.String(255), unique=True)
+    pic = db.Column(db.String(255))
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 商品浏览量

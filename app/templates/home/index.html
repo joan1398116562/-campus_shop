@@ -1,12 +1,14 @@
 {% extends 'home/base.html' %}
 {% block css %}
     <link href="{{ url_for('static', filename='base/css/animate.min.css') }}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{ url_for('static', filename='base/css/index.css') }}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% import 'home/page.html' as pg %}
 {% block content %}
-{#    轮播图开始    #}
-    <div class="container">
-    <div class="animated wow fadeInRight" data-wow-delay="0.6s">
+
+ <div class="middle_div">
+    <!--轮播图开始-->
+    <div class="animated wow fadeInRight carousel-top" data-wow-delay="0.6s">
     <section id="Carousel" data-wow-delay="0.6s">
     <div id="myCarousel" class="carousel slide">
         <!-- 轮播（Carousel）指标 -->
@@ -52,268 +54,121 @@
     </div>
     </section>
     </div>
+    <!--轮播图结束-->
+
+ <!--分类导航开始-->
+    <div class="nav-category" id="nav-category">
+    <ul class="topmenu" id="topmenu">
+    {% for tag in tags %}
+    <li class="li-tags"><a href="{{ url_for('home.category', tag_id=tag.id) }}">{{ tag.name }}<span class="badge">{{ tag.name }}</span></a><span class="occlusion"></span>
+        <div class="submenu">
+{#            <div class="cat-part-col1">#}
+{#                <dl>#}
+{#                    <dt><a href="#">音像</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">音乐</a> <a href="#">影视</a> <a href="#">教育音像</a> <a href="#">游戏</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">文艺</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">小说</a> <a href="#">文学</a> <a href="#">青春文学</a> <a href="#">传记</a> <a#}
+{#                            href="#">艺术</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">人文社科</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">历史</a> <a href="#">心理学</a> <a href="#">政治/军事</a> <a href="#">国学/古籍</a>#}
+{#                        <a href="#">哲学/宗教</a> <a href="#">社会科学</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">经管励志</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">经济</a> <a href="#">金融与投资</a> <a href="#">管理</a> <a href="#">励志与成功</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">科技</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">科普</a> <a href="#">IT</a> <a href="#">建筑</a> <a href="#">医学</a> <a href="#">#}
+{#                        工业技术</a> <a href="#">电子/通信</a> <a href="#">农林</a> <a href="#">科学与自然</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">少儿</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">少儿</a> <a href="#">0-2岁</a> <a href="#">3-6岁</a> <a href="#">7-10岁</a>#}
+{#                        <a href="#">11-14岁</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#                <dl>#}
+{#                    <dt><a href="#">教育</a></dt>#}
+{#                    <dd>#}
+{#                        <a href="#">教材</a> <a href="#">中小学教辅</a> <a href="#">考试</a> <a href="#">外语学习</a>#}
+{#                    </dd>#}
+{#                </dl>#}
+{#            </div>#}
+{#            <div class="cat-part-col2">#}
+{#                <img src="img/1.png" alt="">#}
+{#            </div>#}
+        </div>
+    </li>
+        {% endfor %}
+    </ul>
     </div>
-{#    轮播图结束   #}
-{#       <div class="container">#}
-{#        <div class="row wow fadeIn" data-wow-delay="0.6s">#}
-{#            <div class="col-md-12">#}
-{#                <div class="col-md-2">分类</div>#}
-{#                <div class="col-md-10">#}
-{#                    {% for tag in tags %}#}
-{#                        <a href="{{ url_for('home.index',page=1) }}?tid={{ tag.id }}&time={{ p['time'] }}&sell={{ p['sell'] }}"#}
-{#                                   class="label label-info"><span#}
-{#                                        class="fas fa-tags"></span>&nbsp;{{ tag.name }}</a>#}
-{#                            &nbsp;#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
-{#            <div class="col-md-12">#}
-{#                <div class="col-md-2">上架时间</div>#}
-{#                <div class="col-md-10">#}
-{#                    <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&time=1&sell={{ p['sell'] }}"#}
-{#                       class="label label-default"><span class="fas fa-times"></span>&nbsp;最近</span>#}
-{#                    </a>#}
-{#                    &nbsp;#}
-{#                    <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&time=2&sell={{ p['sell'] }}"#}
-{#                       class="label label-default"><span class="fas fa-times"></span>&nbsp;更早</span>#}
-{#                    </a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-md-12">#}
-{#                {{ pg.page(page_data,'home.index') }}#}
-{#            </div>#}
-{#    </div>#}
-    <div class="product-easy">
-	<div class="container">
-
-		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
-		<script type="text/javascript">
-							$(document).ready(function () {
-								$('#horizontalTab').easyResponsiveTabs({
-									type: 'default', //Types: default, vertical, accordion
-									width: 'auto', //auto or any width like 600px
-									fit: true   // 100% fit in a container
-								});
-							});
-
-		</script>
-		<div class="sap_tabs">
-			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
-				<ul class="resp-tabs-list">
-					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>上架新货</span></li>
-					<li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span>特别活动</span></li>
-					<li class="resp-tab-item" aria-controls="tab_item-2" role="tab"><span>猜你喜欢</span></li>
-				</ul>
-				<div class="resp-tabs-container">
-					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
-                        {% for new in news %}
-						 <div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img width="200" height="200" src="/static/{{ new.pic }}" alt="" class="pro-image-front">
-									<img width="200" height="200" src="/static/{{ new.pic }}" alt="" class="pro-image-back">
-
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="{{ url_for('home.detail', product_id=new.id) }}" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">new</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">{{ new.name }}</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">￥{{ new.price }}</span>
-										<del>￥{{ new.old_price }}</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
-								</div>
-							</div>
-						</div>
-                        {% endfor %}
-						<div class="clearfix"></div>
-					</div>
-					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
-						{% for new in news %}
-						 <div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img width="200" height="200" src="/static/{{ new.pic }}" alt="" class="pro-image-front">
-									<img width="200" height="200" src="/static/{{ new.pic }}" alt="" class="pro-image-back">
-
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="{{ url_for('home.detail', product_id=new.id) }}" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">new</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">{{ new.name }}</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">￥{{ new.price }}</span>
-										<del>￥{{ new.old_price }}</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
-								</div>
-							</div>
-						</div>
-                        {% endfor %}
-
-						<div class="clearfix"></div>
-					</div>
-					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
-						<div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/g1.png" alt="" class="pro-image-front">
-									<img src="images/g1.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">Dresses</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/g2.png" alt="" class="pro-image-front">
-									<img src="images/g2.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html"> Shirts</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/g3.png" alt="" class="pro-image-front">
-									<img src="images/g3.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">Shirts</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 product-men">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/mw2.png" alt="" class="pro-image-front">
-									<img src="images/mw2.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">T shirts</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 product-men yes-marg">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/w4.png" alt="" class="pro-image-front">
-									<img src="images/w4.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">Air Tshirt Black Domyos</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3 product-men yes-marg">
-							<div class="men-pro-item simpleCart_shelfItem">
-								<div class="men-thumb-item">
-									<img src="images/w3.png" alt="" class="pro-image-front">
-									<img src="images/w3.png" alt="" class="pro-image-back">
-										<div class="men-cart-pro">
-											<div class="inner-men-cart-pro">
-												<a href="single.html" class="link-product-add-cart">Quick View</a>
-											</div>
-										</div>
-										<span class="product-new-top">New</span>
-
-								</div>
-								<div class="item-info-product ">
-									<h4><a href="single.html">Hand Bags</a></h4>
-									<div class="info-product-price">
-										<span class="item_price">$45.99</span>
-										<del>$69.71</del>
-									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">Add to cart</a>
-								</div>
-							</div>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-    <div class="container">
-         {{ pg.page(page_data,'home.index') }}
+ <!--分类导航结束-->
+    <div class="clearcc"></div>
     </div>
 
+{% endblock %}
+{% block js %}
+    <script src="{{ url_for('static', filename='base/js/jquery.easydropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
+    <script>
+    /*
+        鼠标悬停显示分类导航栏
+     */
+        $("#nav-category").hide();
+        $("#category-side").mouseover(
+            function () {
+                $("#nav-category").show();
+            }
+        );
+        $("#category-side").mouseout(
+            function () {
+                $("#nav-category").delay(5000).hide(0);
+            }
+        );
+           $("#topmenu").mouseover(
+            function () {
+                $("#nav-category").show();
+            }
+        );
+        $(".li-tags").mouseover(
+            function () {
+                $("#nav-category").show();
+            }
+        );
+    </script>
 
+
+    <script>
+    /*
+        鼠标悬停控制分类导航栏子项目显示隐藏
+     */
+    window.onload = function () {
+        var menuItems = document.getElementsByClassName("topmenu")[0].getElementsByTagName("li");
+        for (var i = 0; i < menuItems.length; i++) {
+            menuItems[i].onmouseover = function () {
+                this.className = "lihover";
+            };
+
+            menuItems[i].onmouseout = function (event) {
+                this.className = "";
+            };
+        }
+    };
+    </script>
 {% endblock %}

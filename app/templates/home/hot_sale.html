@@ -1,0 +1,65 @@
+{% extends 'home/base.html' %}
+{% import 'home/page.html' as pg %}
+{% import 'home/show.html' as show %}
+{% block content %}
+<div class="product-easy">
+	<div class="container">
+
+		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
+		<script type="text/javascript">
+							$(document).ready(function () {
+								$('#horizontalTab').easyResponsiveTabs({
+									type: 'default', //Types: default, vertical, accordion
+									width: 'auto', //auto or any width like 600px
+									fit: true   // 100% fit in a container
+								});
+							});
+
+		</script>
+		<div class="sap_tabs">
+			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+				<ul class="resp-tabs-list">
+					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>热销商品</span></li>
+{#					<li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span>Special Offers</span></li>#}
+{#					<li class="resp-tab-item" aria-controls="tab_item-2" role="tab"><span>Collections</span></li>#}
+				</ul>
+{#                {% for hot in hots %}#}
+{#                    {{ show.show(name, hot.pic , hot.id, hot.name, hot.price, hot.old_price) }}#}
+{#                {% endfor %}#}
+
+			</div>
+            {% for hot in hots %}
+            <div class="col-md-3 product-men">
+							<div class="men-pro-item simpleCart_shelfItem">
+								<div class="men-thumb-item" style="border-top-style: solid;border-top-color: yellow;">
+									<img width="200" height="200" src="/static/{{ hot.pic }}" alt="" class="pro-image-front">
+									<img width="200" height="200" src="/static/{{ hot.pic }}" alt="" class="pro-image-back">
+
+										<div class="men-cart-pro">
+											<div class="inner-men-cart-pro">
+												<a href="{{ url_for('home.detail', product_id=hot.id) }}" class="link-product-add-cart">Quick View</a>
+											</div>
+										</div>
+										<span class="product-new-top">hot</span>
+
+								</div>
+								<div class="item-info-product ">
+									<h4><a href="single.html">{{ hot.name }}</a></h4>
+									<div class="info-product-price">
+										<span class="item_price">￥{{ hot.price }}</span>
+										<del>￥{{ hot.old_price }}</del>
+									</div>
+									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
+								</div>
+							</div>
+						</div>
+            {% endfor %}
+		</div>
+	</div>
+</div>
+    <div class="container">
+        <div class="col-md-12">
+                {{ pg.page(page_data,'home.hot_sale') }}
+            </div>
+    </div>
+{% endblock %}

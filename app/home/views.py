@@ -18,6 +18,10 @@ from app.models import User, AdminUser, Userlog, Product, Tag
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])  # 上传通过检查
 
+"""
+    工具类型函数
+"""
+
 
 def allowed_file(filename):
     """
@@ -33,6 +37,11 @@ def change_name(filename):
     file_info = os.path.splitext(filename)
     filename = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + file_info[-1]
     return filename
+
+
+"""
+    用户逻辑函数
+"""
 
 
 def user_login_dec(f):
@@ -208,6 +217,10 @@ def logout():
     return redirect(url_for('home.login'))
 
 
+"""
+    商品逻辑函数
+"""
+
 # @home.route("/<int:page>/", methods=['GET'])
 # @home.route("/", methods=["GET"])
 # def index(page=None):
@@ -241,14 +254,31 @@ def logout():
 #     )
 #     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
 
+
 @home.route("/", methods=['GET'])
 def index():
-    # page_new = request.args.get("page", 1, type=int)
-    # page_new_data = Product.query.order_by(Product.add_tim  e.desc()).limit()
-    # page_new_data = page_new_data.paginate(page=page_new, per_page=8, error_out=False)
-    # news = page_new_data.items
-    news = Product.query.order_by(Product.add_time.desc()).limit(10)
-    return render_template("home/index.html", news=news)
+    tags = Tag.query.all()
+    total = Product.query.all()
+    total = len(total)
+    return render_template("home/index.html", tags=tags, total=total)
+
+
+@home.route("/news/", methods=['GET'])
+def new_product():
+    page = request.args.get("page", 1, type=int)
+    page_data = Product.query.order_by(Product.add_time.desc())
+    page_data = page_data.paginate(page=page, per_page=8, error_out=False)
+    news = page_data.items
+    return render_template("home/news.html", news=news, page_data=page_data, page=page)
+
+
+@home.route("/all_product/", methods=['GET'])
+def all_product():
+    page = request.args.get("page", 1, type=int)
+    page_data = Product.query
+    page_data = page_data.paginate(page=page, per_page=8, error_out=False)
+    products = page_data.items
+    return render_template("home/all_product.html", products=products, page_data=page_data, page=page)
 
 
 @home.route("/hot_sale/", methods=['GET'])
@@ -259,10 +289,7 @@ def hot_sale():
     page_data = page_data.paginate(page=page, per_page=8, error_out=False)
     hots = page_data.items
     # print(hots)
-    return render_template("home/hotsale.html", hots=hots, page_data=page_data, page=page)
-
-
-
+    return render_template("home/hot_sale.html", hots=hots, page_data=page_data, page=page)
 
 
 @home.route('/detail/<product_id>/')
@@ -270,25 +297,24 @@ def detail(product_id):
     product_model = Product.query.filter(Product.id == product_id).first()
     return render_template('home/detail.html', product=product_model)
 
-# @home.route("/detail/", methods=['GET'])
-# def detail(id):
-#     product = Product.query.filter_by(id=id).first()
-#
-#     return render_template("home/detail.html", product=product)
+
+@home.route('/category/<tag_id>/', methods=['GET'])
+def category(tag_id):
+    tag = Tag.query.filter(Tag.id == tag_id).first()
+    product_cate = Product.query.join(Tag).filter(Tag.id == tag_id).all()
+    return render_template('home/category.html', product_cate=product_cate, tag=tag)
 
 
-@home.route("/order/", methods=['GET'])
-def order():
-    return render_template("home/order.html")
-
-
-@home.route("/try/", methods=['GET'])
-def try_do():
-    pic = Product.query.order_by(Product.sell.desc()).all()
-
-    return render_template("home/try.html", pic=pic)
-
-
-
-
-
+@home.route('/search/<int:page>/')
+def search(page=None):
+    """
+        搜索界面
+    """
+    if page is None:
+        page = 1
+    key = request.args.get('key', '')
+    product_count = Product.query.filter(Product.name.ilike('%' + key + '%')).count()
+    page_data = Product.query.filter(Product.name.ilike('%' + key + '%')). \
+        order_by(Product.add_time.desc()).paginate(page=page, per_page=10)
+    page_data.key = key
+    return render_template('home/search.html', product_count=product_count, key=key, page_data=page_data)
