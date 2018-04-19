@@ -1,12 +1,13 @@
 import os
 import datetime
+import json
 from functools import wraps  # 登录装饰器
 
 from werkzeug.utils import secure_filename
-
 from . import home
-from flask import render_template, redirect, url_for, flash, session, request
+from flask import render_template, redirect, url_for, flash, session, request, jsonify
 from werkzeug.security import generate_password_hash
+from decimal import Decimal, ROUND_CEILING
 
 from app import db, config
 from sqlalchemy import desc
@@ -221,46 +222,19 @@ def logout():
     商品逻辑函数
 """
 
-# @home.route("/<int:page>/", methods=['GET'])
-# @home.route("/", methods=["GET"])
-# def index(page=None):
-#     tags = Tag.query.all()
-#     page_data = Product.query
-#     # 分类
-#     tid = request.args.get("tid", 0)
-#     if int(tid) != 0:
-#         page_data = page_data.filter_by(tag_id=int(tid))
-#     # 时间
-#     time = request.args.get("time", 0)
-#     if int(time) != 0:
-#         if int(time) == 1:
-#             page_data = page_data.order_by(Product.add_time.desc())
-#         else:
-#             page_data = page_data.order_by(Product.add_time.asc())
-#     # 销量
-#     sell = request.args.get("sell", 0)
-#     if int(sell) != 0:
-#         if int(sell) == 1:
-#             page_data = page_data.order_by(Product.sell.desc())
-#         else:
-#             page_data = page_data.order_by(Product.sell.asc())
-#     if page is None:
-#         page = 1
-#     page_data = page_data.paginate(page=page, per_page=8)
-#     p = dict(
-#         tid=tid,
-#         time=time,
-#         sell=sell,
-#     )
-#     return render_template("home/index.html", tags=tags, p=p, page_data=page_data)
-
 
 @home.route("/", methods=['GET'])
 def index():
     tags = Tag.query.all()
     total = Product.query.all()
     total = len(total)
-    return render_template("home/index.html", tags=tags, total=total)
+    discounts = Product.query.filter(Product.discount < 10).all()
+    for discount in discounts:
+        # discount.sale_price = discount.price * discount.discount * 0.1
+        discount.true_price = Decimal(discount.price * discount.discount * 0.1).quantize(Decimal('0.00'), ROUND_CEILING)
+        # db.session.commit()
+    one_dollers = Product.query.filter(Product.isKilled == True).all()
+    return render_template("home/index.html", tags=tags, total=total, discounts=discounts, one_dollers=one_dollers)
 
 
 @home.route("/news/", methods=['GET'])
@@ -318,3 +292,37 @@ def search(page=None):
         order_by(Product.add_time.desc()).paginate(page=page, per_page=10)
     page_data.key = key
     return render_template('home/search.html', product_count=product_count, key=key, page_data=page_data)
+
+
+@home.route('/checkout/')
+def checkout():
+    """
+        购物车
+    """
+    return render_template('home/checkout.html')
+
+
+@home.route('/json/')
+def my_view():
+    data = [1, 'foo']
+    letters = ['a', 'b', 'c']
+    return render_template('home/json.html', data=map(json.dumps, data), letters=letters)
+
+
+@home.route('/cart/', methods=['POST'])
+def cart():
+    if "user" not in session:
+        flash("请登录后再试")
+    else:
+        data = json.loads(request.form.get('data'))
+        name = data["itemName"]
+        age = data["age"]
+        price = data["itemPrice"]
+
+        cart_info = dict()
+        cart_info['name'] = name
+        cart_info['age'] = age
+        cart_info['price'] = price
+        return jsonify(cart_info)
+
+

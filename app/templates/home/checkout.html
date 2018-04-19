@@ -1,0 +1,119 @@
+
+{% extends "home/base.html" %}
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="/static/base/css/checkout.css">
+{% endblock %}
+{% block content %}
+    <div class="article_include" style="background-color: #ffffff; margin-top: 5em">
+        <article id="on_sale" class="article_single">
+            我的购物车
+        </article>
+    </div>
+    <div class="container">
+    <div class="simpleCart_items">
+          <!--数据加载前显示的内容 开始-->
+                <div style="text-align: center;">
+                    购物车数据加载中...请稍待.
+                </div>
+                <!--数据加载前显示的内容 结束-->
+    </div>
+    </div>
+     <div class="checkout">
+
+	<div class="container">
+        <div class="checkout-left">
+
+				<div class="checkout-right-basket animated wow slideInRight" data-wow-delay=".5s">
+					<a href="{{ url_for('home.index') }}"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>继续购物</a>
+				</div>
+				<div class="checkout-left-basket animated wow slideInLeft" data-wow-delay=".5s">
+					<h4>购物总计</h4>
+					<ul>
+                        <li>总计 <i>-</i> <span class="simpleCart_total"></span></li>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+	</div>
+</div>
+    <button id="save_cart">提交订单</button>
+    <script>
+        $("#save_cart").click(function () {
+           $(".itemRow").each(function () {
+              var itemName = $(this).find(".item-name").text();
+              var itemPrice = $(this).find(".item-price").text();
+              var itemQty = $(this).find(".item-quantity").text();
+              var itemTotal = $(this).find(".item-total").text();
+              var data = {
+                  data:JSON.stringify({
+                      "itemName": itemName,
+                      "itemPrice": itemPrice,
+                      "itemQty": itemQty,
+                      "itemTotal": itemTotal,
+                      "age": 1
+                  })
+              };
+              $.ajax(
+                  {
+                      url: '{{ url_for('home.cart') }}',
+                      type: "POST",
+                      data: data,
+                    /*  contentType: 'application/json; charset=UTF-8', */
+                      dataType: 'json',
+                      success: function (data) {
+                          alert(JSON.stringify(data));
+                          alert(data["itemTotal"]);
+                          /*if (data){
+                              window.location.href=""
+                          }*/
+                      },
+                      error: function (XMLHttpRequest, textStatus, errorThrown) {
+                          alert("请登录后再试");
+                      }
+                  }
+              )
+           });
+        });
+    </script>
+
+{% endblock %}
+{% block js %}
+      <script type="text/javascript">
+      simpleCart.ready(function () {
+
+         $('.simpleCart_items').addClass("table-responsive");
+         $('img').addClass("hello");
+
+      });
+                simpleCart({
+                    cartColumns:[
+                        { view: "remove", label: "操作", text: "X"},
+                        { attr: "image", label: "商品", view: "image"},
+                        { view: "decrement", label: false, text: "-"},
+                        { attr: "quantity", label: "数量", view: "input"},
+                        { view: "increment", label: false, text: "+"},
+                        { attr: "name", label: "商品名称"},
+                        { attr: "price", label: "价格"},
+                        { attr: "total", label: "小计", view: "currency"},
+
+
+                    ]
+                });
+                /*var checkout = function () {
+                    var id = "";
+                    var price = "";
+                    var quantity = "";
+                    var url = "/checkout/";
+                    simpleCart.each(function (item) {
+                        id += item.get("pid") + "";
+
+                    })
+                }
+                 simpleCart.ready(function () {
+        var name = item.get("name");
+        var price = item.get("price");
+        console.log(name);
+    });*/
+            </script>
+
+{% endblock %}

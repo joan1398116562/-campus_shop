@@ -6,7 +6,7 @@
 {% import 'home/page.html' as pg %}
 {% block content %}
 
- <div class="middle_div">
+ <div class="middle_div clearfix">
     <!--轮播图开始-->
     <div class="animated wow fadeInRight carousel-top" data-wow-delay="0.6s">
     <section id="Carousel" data-wow-delay="0.6s">
@@ -121,7 +121,108 @@
  <!--分类导航结束-->
     <div class="clearcc"></div>
     </div>
+    <div class="article_include" style="background-color: #ffffff">
+        <article id="on_sale" class="article_single">
+            限时促销
+        </article>
+    </div>
+    <div class="product-easy">
+	<div class="container">
 
+		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
+		<script type="text/javascript">
+							$(document).ready(function () {
+								$('#horizontalTab').easyResponsiveTabs({
+									type: 'default', //Types: default, vertical, accordion
+									width: 'auto', //auto or any width like 600px
+									fit: true   // 100% fit in a container
+								});
+							});
+
+		</script>
+		<div class="sap_tabs">
+            {% for discount in discounts %}
+            <div class="col-md-3 product-men">
+							<div class="men-pro-item simpleCart_shelfItem">
+								<div class="men-thumb-item" style="border-top: 1px solid #FDA30E ;">
+									<img width="200" height="200" src="/static/{{ discount.pic }}" alt="{{ discount.name }}" class="pro-image-front">
+									<img width="200" height="200" src="/static/{{ discount.pic }}"
+                                         alt="{{ discount.name }}" class="pro-image-back item_image">
+
+										<div class="men-cart-pro">
+											<div class="inner-men-cart-pro">
+												<a href="{{ url_for('home.detail', product_id=discount.id) }}" class="link-product-add-cart">Quick View</a>
+											</div>
+										</div>
+										<span class="product-new-top">限时促销</span>
+
+								</div>
+								<div class="item-info-product">
+                                    <h4 class="product_name"><a href="{{ url_for('home.detail', product_id=discount.id) }}"><span class="item_name">{{ discount.name }}</span></a></h4>
+									<div class="info-product-price">
+                                        <span class="item_price" style="color:#fda30e;font-weight: bold;font-size: 28px">
+                                            ￥{{ discount.true_price }}</span><span><del>￥{{ discount.price }}</del>
+                                    </span>
+									</div>
+									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
+								</div>
+							</div>
+						</div>
+            {% endfor %}
+		</div>
+	</div>
+</div>
+    <div class="article_include" style="background-color: #ffffff; margin-top: 5em">
+        <article id="on_sale" class="article_single">
+            一元秒杀
+        </article>
+    </div>
+    <div class="product-easy">
+	<div class="container">
+
+		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
+		<script type="text/javascript">
+							$(document).ready(function () {
+								$('#horizontalTab').easyResponsiveTabs({
+									type: 'default', //Types: default, vertical, accordion
+									width: 'auto', //auto or any width like 600px
+									fit: true   // 100% fit in a container
+								});
+							});
+
+		</script>
+		<div class="sap_tabs">
+            {% for one_doller in one_dollers %}
+            <div class="col-md-3 product-men">
+							<div class="men-pro-item simpleCart_shelfItem">
+								<div class="men-thumb-item" style="border-top: 1px solid #FDA30E ;">
+									<img width="200" height="200" src="/static/{{ one_doller.pic }}" alt="" class="pro-image-front">
+						            <img width="200" height="200" src="/static/{{ one_doller.pic }}"
+                                         alt="{{ one_doller.name }}" class="pro-image-back item_image">
+
+										<div class="men-cart-pro">
+											<div class="inner-men-cart-pro">
+												<a href="{{ url_for('home.detail', product_id=one_doller.id) }}" class="link-product-add-cart">Quick View</a>
+											</div>
+										</div>
+										<span class="product-new-top">一元秒杀</span>
+
+								</div>
+								<div class="item-info-product ">
+                                    <h4 class="product_name"><a href="{{ url_for('home.detail', product_id=one_doller.id) }}"><span class="item_name">{{ one_doller.name }}</span></a></h4>
+									<div class="info-product-price">
+                                            <span class="item_price" style="color:#e31436;font-weight: bold;font-size: 28px">
+                                            ￥1</span><span><del>￥{{ one_doller.price }}</del>
+                                    </span>
+									</div>
+									<a href="#" class="item_add single-item hvr-outline-out button2">现在抢购</a>
+								</div>
+							</div>
+						</div>
+            {% endfor %}
+		</div>
+	</div>
+</div>
 {% endblock %}
 {% block js %}
     <script src="{{ url_for('static', filename='base/js/jquery.easydropdown.js') }}"></script>

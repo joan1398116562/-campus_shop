@@ -30,6 +30,10 @@
     <script src="{{ url_for('static', filename='base/js/wow.min.js') }}"></script>
     <script src="{{ url_for('static', filename='base/js/topClick.js') }}"></script>
     <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+    <script src="{{ url_for('static', filename='base/ckeditor/ckeditor.js') }}"></script>
+    <script>
         new WOW().init();
     </script>
     <script>
@@ -121,7 +125,7 @@
         </div>
         <div class="top_nav_right">
             <div class="cart box_1">
-                <a href="checkout.html">
+                <a href="{{ url_for('home.checkout') }}">
                     <h3>
                         <div class="total">
                             <i class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></i>
@@ -131,7 +135,7 @@
 
                     </h3>
                 </a>
-                <p><a href="javascript:;" class="simpleCart_empty">空空如也</a></p>
+                <p><a href="javascript:;" class="simpleCart_empty">清空购物车</a></p>
 
             </div>
         </div>
@@ -170,6 +174,44 @@
             location.href = "{{ url_for('home.search', page=1) }}?key=" + key
         });
     });
+</script>
+<script>
+    simpleCart.currency({
+        code: "RMB",
+        symbol: "￥",
+        accuracy: 2
+    });
+    simpleCart({
+
+        cartColumns: [
+            {attr: "name", label: "Name"},
+            {attr: "price", label: "Price", view: 'currency'},
+            {attr: "image", label: "image" },
+            {view: "decrement", label: false, text: "-"},
+            {attr: "quantity", label: "Qty"},
+            {view: "increment", label: false, text: "+"},
+            {attr: "total", label: "SubTotal", view: 'currency'},
+            {view: "remove", text: "Remove", label: false}
+        ],
+        cartStyle: "table",
+       /* checkout:{
+            type:"SendForm",
+            url: "send_cart.py",
+            method: "POST",
+            success: "success.html",
+            cancel: "cancel.py",
+            extra_data:{
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                cartid: "123123123"
+            }
+        }*/
+    });
+
+    /*simpleCart.bind("afterAdd", function (item) {
+        alert(item.get("name") + "添加进购物车");
+    });*/
+
 </script>
 <!-- 底部结束 -->
 

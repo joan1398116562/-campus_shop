@@ -31,11 +31,17 @@ from app.models import db
 from models import User, Product, Tag, Comment, AdminUser, Userlog
 from home.forms import AdminLoginForm, RegistrationForm
 
+from wtforms import TextAreaField
+from wtforms.widgets import TextArea
+
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")  # 上传文件路径
+CK_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/base/ckeditor/ckeditor.js")
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 # file_path = op.join(op.dirname(__file__), 'static/uploads/products/')  # 商品文件上传路径
 file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static")
+
+base_dir = os.path.dirname(__file__)
 
 app = Flask(__name__)
 
@@ -162,6 +168,19 @@ flask-admin
 """
 
 
+class CKTextAreaWidget(TextArea):
+    def __call__(self, field, **kwargs):
+        if kwargs.get('class'):
+            kwargs['class'] += ' ckeditor'
+        else:
+            kwargs.setdefault('class', 'ckeditor')
+        return super(CKTextAreaWidget, self).__call__(field, **kwargs)
+
+
+class CKTextAreaField(TextAreaField):
+    widget = CKTextAreaWidget()
+
+
 class UserAdmin(sqla.ModelView):
     """
     用户管理视图
@@ -202,13 +221,14 @@ class ProductAdmin(sqla.ModelView):
         return login.current_user.is_authenticated
 
     column_display_pk = True
-    column_list = ('id', 'name', 'price', 'old_price', 'stock', 'sell', 'view_num', 'add_time', 'pic',
+    column_list = ('id', 'name', 'price', 'discount', 'iskilled', 'stock', 'sell', 'view_num', 'add_time', 'pic',
                    'description')
     column_labels = {
         'id': u'编号',
         'name': u'名称',
         'price': u'价格',
-        'old_price': u'原价',
+        'discount': u'打折',
+        'isKilled': u'是否秒杀',
         'stock': u'库存',
         'sell': u'销量',
         'view_num': u'浏览量',
@@ -221,9 +241,15 @@ class ProductAdmin(sqla.ModelView):
     }
     form_excluded_columns = ['comments', 'pic']
 
-    column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id', 'view_num')
+    column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id', 'view_num', 'discount', 'isKilled')
 
-    column_searchable_list = ['name', 'id', 'price', 'stock', 'sell', 'tag_id', 'description']
+    column_searchable_list = ['name', 'id', 'price', 'stock', 'sell', 'tag_id', 'description', 'discount', 'isKilled']
+
+    extra_js = ['/static/ckeditor/ckeditor.js']
+
+    form_overrides = {
+        'description': CKTextAreaField
+    }
 
     # 设置缩略图
     def _list_thumbnail(view, context, model, name):
@@ -259,6 +285,8 @@ class ProductAdmin(sqla.ModelView):
                                   form.thumbgen_filename(target.pic)))
             except OSError:
                 flash("删除缩略图出错")
+
+
 
 
 class UserlogAdmin(sqla.ModelView):
@@ -338,6 +366,7 @@ admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户日志管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
 admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
 admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
+
 
 # 开启调试模式
 app.debug = False

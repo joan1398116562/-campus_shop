@@ -1,0 +1,43 @@
+article.article_single{
+    background-color: #FDA30E;
+    color: #ffffff;
+    width: 20%;
+    margin: 1.25em auto 4em;
+    line-height: 60px;
+    text-align: center;
+    display: block;
+    font-size: 28px;
+
+}
+table{
+    width: 100%;
+    margin: 0 auto;
+}
+
+table th {
+    background: #fda30e;
+
+    text-transform: capitalize;
+    color: #ffffff;
+    /*border-right: 1px solid #CDCDCD;*/
+    text-align: center;
+    padding: 7px;
+
+}
+
+table td{
+    text-align: center;
+    padding: 7px;
+    font-size: 14px;
+    color:#000000;
+    border: 1px solid #CDCDCD;
+
+}
+
+img{
+    width: 150px;
+    height: auto;
+}
+input{
+    text-align: center;
+}

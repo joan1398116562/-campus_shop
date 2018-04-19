@@ -155,10 +155,10 @@
 .middle_div{
     position: relative;
 }
-.carousel-top{
-    z-index: 0;
+/*.carousel-top{*/
+    /*z-index: 0;*/
 
-}
+/*}*/
 .nav-category{
     position: absolute;
     z-index: 1;
@@ -168,4 +168,22 @@
 }
 div.clearcc{
     clear: both;
+}
+
+/*
+    首页下面的几个活动区域
+ */
+article.article_single{
+    background-color: #FDA30E;
+    color: #ffffff;
+    width: 60%;
+    margin: 1.25em auto 0.5125em;
+    line-height: 60px;
+    text-align: center;
+    display: block;
+    font-size: 28px;
+}
+
+div.product-easy{
+    padding: 0;
 }

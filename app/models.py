@@ -6,6 +6,7 @@ from flask_migrate import Migrate, MigrateCommand
 from werkzeug.security import check_password_hash
 
 
+
 # 实例化app
 appm = Flask(__name__)
 appm.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:177036@127.0.0.1:3306/shop"
@@ -81,8 +82,12 @@ class Product(db.Model):
     name = db.Column(db.String(255), unique=True)
     # 价格
     price = db.Column(db.Float)
-    # 原价
-    old_price = db.Column(db.Float)
+    # 打折折数
+    discount = db.Column(db.Float, default=10)
+    # 真实打折后价格
+    true_price = db.Column(db.Float)
+    # 是否一元秒杀区
+    isKilled = db.Column(db.Boolean, default=False)
     # 库存
     stock = db.Column(db.Integer)
     # 销量

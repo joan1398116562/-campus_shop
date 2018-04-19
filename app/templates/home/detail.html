@@ -44,7 +44,7 @@
                     </div>
 
 					<div class="description">
-                        {{ product.description }}
+                        {{ product.description|safe }}
                     </div>
 
 					<div class="occasional">
@@ -70,7 +70,7 @@
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade in active bootstrap-tab-text" id="home" aria-labelledby="home-tab">
 								<h5>商品简介</h5>
-								<p>{{ product.description }}</p>
+								{{ product.description|safe }}
 							</div>
 							<div role="tabpanel" class="tab-pane fade bootstrap-tab-text" id="profile" aria-labelledby="profile-tab">
 								<div class="bootstrap-tab-text-grids">
