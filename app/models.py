@@ -48,6 +48,7 @@ class User(db.Model):
     userlogs = db.relationship('Userlog', backref='user')
     # 用户评论外键关系关联
     comments = db.relationship('Comment', backref='user')
+    orders = db.relationship('Order', backref='user')
 
     def __repr__(self):
         return "<User %r>" % self.name
@@ -123,6 +124,42 @@ class Tag(db.Model):
 
     def __repr__(self):
         return "<Tag %r>" % self.name
+
+
+class Order(db.Model):
+    """订单表"""
+    __tablename__ = "order"
+    # 订单编号
+    id = db.Column(db.Integer, primary_key=True)
+    # 订单所属用户
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    # 订单添加时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    # 订单详情信息关系关联
+    orderinfo = db.relationship("OrderInfo", backref='order')
+
+    def __repr__(self):
+        return "<Order %r>" % self.id
+
+
+class OrderInfo(db.Model):
+    """订单明细表"""
+    __tablename__ = "orderinfo"
+    # 订单详情编号，和订单表编号一致
+    id = db.Column(db.Integer, db.ForeignKey('order.id'), primary_key=True)
+    # 含有商品
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    # 数量
+    quantity = db.Column(db.Integer)
+    # 价格
+    price = db.Column(db.Float)
+    # 总计
+    total = db.Column(db.Float)
+    # 添加时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    def __repr__(self):
+        return "<OrderInfo %r>" % self.id
 
 
 class Comment(db.Model):
