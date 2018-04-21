@@ -21,7 +21,7 @@
                         <h4 class="media-heading">{{ v.name }}<a href="{{ url_for('home.detail',product_id=v.id,page=1) }}"
                                                                   class="label label-primary pull-right"><span
                                 class="glyphicon glyphicon-play"></span>查看详情</a></h4>
-                        {{ v.description }}
+                        {{ v.description|safe }}
                     </div>
                 </div>
             {% endfor %}

@@ -43,6 +43,7 @@
               var itemName = $(this).find(".item-name").text();
               var itemPrice = $(this).find(".item-price").text();
               var itemQty = $(this).find(".item-quantity").text();
+             //  var itemQty = item.get('quantity');
               var itemTotal = $(this).find(".item-total").text();
               var data = {
                   data:JSON.stringify({
@@ -90,7 +91,7 @@
                         { view: "remove", label: "操作", text: "X"},
                         { attr: "image", label: "商品", view: "image"},
                         { view: "decrement", label: false, text: "-"},
-                        { attr: "quantity", label: "数量", view: "input"},
+                        { attr: "quantity", label: "数量"},
                         { view: "increment", label: false, text: "+"},
                         { attr: "name", label: "商品名称"},
                         { attr: "price", label: "价格"},

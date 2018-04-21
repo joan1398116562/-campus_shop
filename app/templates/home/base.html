@@ -70,7 +70,7 @@
              <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
 
-                <li style="margin-left: 18em;margin-top: -6px">
+                <li style="margin-left: 26em;margin-top: -6px">
                     <a class="curlink" href="{{ url_for('home.user')}}"><span class="fas fa-user-secret fa-2x "></span>&nbsp;
                         <span style="">会员中心</span></a>
                 </li>
@@ -194,22 +194,11 @@
             {view: "remove", text: "Remove", label: false}
         ],
         cartStyle: "table",
-       /* checkout:{
-            type:"SendForm",
-            url: "send_cart.py",
-            method: "POST",
-            success: "success.html",
-            cancel: "cancel.py",
-            extra_data:{
-                name: document.getElementById("name").value,
-                email: document.getElementById("email").value,
-                cartid: "123123123"
-            }
-        }*/
     });
 
     /*simpleCart.bind("afterAdd", function (item) {
         alert(item.get("name") + "添加进购物车");
+        添加购物车添加信息
     });*/
 
 </script>

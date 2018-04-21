@@ -8,7 +8,7 @@
 {% block content %}
     <div class="single">
 	<div class="container simpleCart_shelfItem">
-		<div class="col-md-5 single-right-left  animated wow slideInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
+		<div class="col-md-5 single-right-left animated wow slideInUp animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInUp;">
 			<div class="grid images_3_of_2">
 				<div class="flexslider">
 					<!-- FlexSlider -->
@@ -22,17 +22,20 @@
 							});
 						</script>
 					<!-- //FlexSlider-->
-
-                    <img src="/static/{{ product.pic }}" class="img-responsive img-thumbnail item_image">
+					<img src="/static/{{ product.pic }}" class="img-responsive img-thumbnail item-thumb item_image">
 					<div class="clearfix"></div>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-7 single-right-left  animated wow slideInRight animated" data-wow-delay=".5s" style="visibility: visible; animation-delay: 0.5s; animation-name: slideInRight;">
             <span class="item_name"><h3>{{ product.name }}</h3></span>
-                    <div class="price-tab">
-                        <span class="span-margin">售价</span><span class="span-margin">￥</span><span class="price item_price">{{ product.price }}</span>
-                    </div>
+            <div class="price-tab">
+                <span class="span-margin">售价</span><span class="span-margin">￥</span><span class="item_price" style="color:#fda30e;font-weight: bold;font-size: 28px">
+                        {% if product.isKilled == True %}
+                            1{% else %}
+                            {{ product.true_price }}
+                        {% endif %}</span>
+            </div>
                     <div class="city-choose">
                         <form role="form" class="form-horizontal">
                             <div class="form-group">
@@ -77,7 +80,7 @@
 								<div class="bootstrap-tab-text-grids">
 									<div class="bootstrap-tab-text-grid">
 										<div class="bootstrap-tab-text-grid-left">
-											<img src="images/men3.jpg" alt=" " class="img-responsive">
+											<img src="images/men3.jpg" alt=" " class="img-responsive ">
 										</div>
 										<div class="bootstrap-tab-text-grid-right">
 											<ul>
@@ -118,4 +121,25 @@
 {% block js %}
     <script src="{{ url_for('static', filename='base/js/city-picker.data.js') }}"></script>
     <script src="{{ url_for('static', filename='base/js/city-picker.js') }}"></script>
+    <script>
+     simpleCart.currency({
+        code: "RMB",
+        symbol: "￥",
+        accuracy: 2
+    });
+     simpleCart({
+
+        cartColumns: [
+            {attr: "name", label: "Name"},
+            {attr: "price", label: "Price", view: 'currency'},
+            {attr: "image", label: "image" },
+            {view: "decrement", label: false, text: "-"},
+            {attr: "quantity", label: "Qty"},
+            {view: "increment", label: false, text: "+"},
+            {attr: "total", label: "SubTotal", view: 'currency'},
+            {view: "remove", text: "Remove", label: false}
+        ],
+        cartStyle: "table",
+    });
+    </script>
 {% endblock js %}

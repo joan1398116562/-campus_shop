@@ -48,6 +48,8 @@ class User(db.Model):
     userlogs = db.relationship('Userlog', backref='user')
     # 用户评论外键关系关联
     comments = db.relationship('Comment', backref='user')
+    # 用户购物车外键关系关联
+    carts = db.relationship('Cart', backref='user')
     orders = db.relationship('Order', backref='user')
 
     def __repr__(self):
@@ -105,6 +107,7 @@ class Product(db.Model):
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'))
     # 商品评论外键关系关联
     comments = db.relationship("Comment", backref='product')
+    cartinfos = db.relationship('CartInfo', backref='product')
 
     def __repr__(self):
         return "<Product %r>" % self.name
@@ -126,11 +129,47 @@ class Tag(db.Model):
         return "<Tag %r>" % self.name
 
 
+class Cart(db.Model):
+    """购物车表"""
+    __tablename__ = 'cart'
+    # 购物车编号
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # 添加时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    cartinfos = db.relationship('CartInfo', backref='cart')
+
+    def __repr__(self):
+        return "<Cart %r>" % self.id
+
+
+class CartInfo(db.Model):
+    """购物车详情表"""
+    __tablename__ = 'cartinfo'
+    # 购物车详情编号
+    id = db.Column(db.Integer, primary_key=True)
+    # 商品数量
+    quantity = db.Column(db.Integer)
+    # 商品名字
+    product_name = db.Column(db.String(100))
+    # 商品价格
+    product_price = db.Column(db.Float)
+    # 添加时间
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    cart_id = db.Column(db.Integer, db.ForeignKey('cart.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+
+    def __repr__(self):
+        return "<CartInfo %r>" % self.id
+
+
 class Order(db.Model):
     """订单表"""
     __tablename__ = "order"
     # 订单编号
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # 订单所属用户
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # 订单添加时间

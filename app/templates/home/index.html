@@ -61,59 +61,8 @@
     <ul class="topmenu" id="topmenu">
     {% for tag in tags %}
     <li class="li-tags"><a href="{{ url_for('home.category', tag_id=tag.id) }}">{{ tag.name }}<span class="badge">{{ tag.name }}</span></a><span class="occlusion"></span>
-        <div class="submenu">
-{#            <div class="cat-part-col1">#}
-{#                <dl>#}
-{#                    <dt><a href="#">音像</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">音乐</a> <a href="#">影视</a> <a href="#">教育音像</a> <a href="#">游戏</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">文艺</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">小说</a> <a href="#">文学</a> <a href="#">青春文学</a> <a href="#">传记</a> <a#}
-{#                            href="#">艺术</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">人文社科</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">历史</a> <a href="#">心理学</a> <a href="#">政治/军事</a> <a href="#">国学/古籍</a>#}
-{#                        <a href="#">哲学/宗教</a> <a href="#">社会科学</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">经管励志</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">经济</a> <a href="#">金融与投资</a> <a href="#">管理</a> <a href="#">励志与成功</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">科技</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">科普</a> <a href="#">IT</a> <a href="#">建筑</a> <a href="#">医学</a> <a href="#">#}
-{#                        工业技术</a> <a href="#">电子/通信</a> <a href="#">农林</a> <a href="#">科学与自然</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">少儿</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">少儿</a> <a href="#">0-2岁</a> <a href="#">3-6岁</a> <a href="#">7-10岁</a>#}
-{#                        <a href="#">11-14岁</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#                <dl>#}
-{#                    <dt><a href="#">教育</a></dt>#}
-{#                    <dd>#}
-{#                        <a href="#">教材</a> <a href="#">中小学教辅</a> <a href="#">考试</a> <a href="#">外语学习</a>#}
-{#                    </dd>#}
-{#                </dl>#}
-{#            </div>#}
-{#            <div class="cat-part-col2">#}
-{#                <img src="img/1.png" alt="">#}
-{#            </div>#}
-        </div>
+{#        <div class="submenu">#}
+{#        </div>#}
     </li>
         {% endfor %}
     </ul>
@@ -151,18 +100,17 @@
 
 										<div class="men-cart-pro">
 											<div class="inner-men-cart-pro">
-												<a href="{{ url_for('home.detail', product_id=discount.id) }}" class="link-product-add-cart">Quick View</a>
+												<a href="{{ url_for('home.detail_onsale', product_id=discount.id) }}" class="link-product-add-cart">Quick View</a>
 											</div>
 										</div>
 										<span class="product-new-top">限时促销</span>
 
 								</div>
 								<div class="item-info-product">
-                                    <h4 class="product_name"><a href="{{ url_for('home.detail', product_id=discount.id) }}"><span class="item_name">{{ discount.name }}</span></a></h4>
+                                    <h4 class="product_name"><a href="{{ url_for('home.detail_onsale', product_id=discount.id) }}"><span class="item_name">{{ discount.name }}</span></a></h4>
 									<div class="info-product-price">
                                         <span class="item_price" style="color:#fda30e;font-weight: bold;font-size: 28px">
-                                            ￥{{ discount.true_price }}</span><span><del>￥{{ discount.price }}</del>
-                                    </span>
+                                            ￥{{ discount.true_price }}</span><del>￥{{ discount.price }}</del>
 									</div>
 									<a href="#" class="item_add single-item hvr-outline-out button2">添加到购物车</a>
 								</div>
@@ -202,18 +150,18 @@
 
 										<div class="men-cart-pro">
 											<div class="inner-men-cart-pro">
-												<a href="{{ url_for('home.detail', product_id=one_doller.id) }}" class="link-product-add-cart">Quick View</a>
+												<a href="{{ url_for('home.detail_onsale', product_id=one_doller.id) }}" class="link-product-add-cart">Quick View</a>
 											</div>
 										</div>
 										<span class="product-new-top">一元秒杀</span>
 
 								</div>
 								<div class="item-info-product ">
-                                    <h4 class="product_name"><a href="{{ url_for('home.detail', product_id=one_doller.id) }}"><span class="item_name">{{ one_doller.name }}</span></a></h4>
+                                    <h4 class="product_name"><a href="{{ url_for('home.detail_onsale', product_id=one_doller.id) }}"><span class="item_name">{{ one_doller.name }}</span></a></h4>
 									<div class="info-product-price">
                                             <span class="item_price" style="color:#e31436;font-weight: bold;font-size: 28px">
-                                            ￥1</span><span><del>￥{{ one_doller.price }}</del>
-                                    </span>
+                                            ￥1</span><del>￥{{ one_doller.price }}</del>
+
 									</div>
 									<a href="#" class="item_add single-item hvr-outline-out button2">现在抢购</a>
 								</div>

@@ -1,0 +1,11 @@
+article.article_single{
+    background-color: #FDA30E;
+    color: #ffffff;
+    width: 30%;
+    margin: 1.25em auto 4em;
+    line-height: 60px;
+    text-align: center;
+    display: block;
+    font-size: 28px;
+
+}

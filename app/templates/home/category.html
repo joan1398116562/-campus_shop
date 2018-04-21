@@ -1,5 +1,8 @@
 {% extends "home/base.html" %}
 {% import "home/page.html" as pg %}
+{% block css %}
+    <link rel="stylesheet" rel="stylesheet" media="all" href="{{ url_for('static', filename='base/css/category.css') }}">
+{% endblock %}
 {% block content %}
     <div class="container">
         <h3>全部结果》{{ tag.name }}</h3>
@@ -16,19 +19,18 @@
 								});
 							});
 
-		</script>
+		</script><div class="article_include" style="background-color: #ffffff; margin-top: 5em">
+        <article id="on_sale" class="article_single">
+            {{ tag.name }}
+        </article>
+    </div>
 		<div class="sap_tabs">
-			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
-				<ul class="resp-tabs-list">
-					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>新品上架</span></li>
-				</ul>
-			</div>
             {% for product in product_cate %}
             <div class="col-md-3 product-men">
 							<div class="men-pro-item simpleCart_shelfItem">
 								<div class="men-thumb-item" style="border-top-style: solid;border-top-color: #FDA30E ;">
 									<img width="200" height="200" src="/static/{{ product.pic }}" alt="" class="pro-image-front">
-									<img width="200" height="200" src="/static/{{ product.pic }}" alt="" class="pro-image-back">
+									<img width="200" height="200" src="/static/{{ product.pic }}" alt="" class="pro-image-back item_image">
 
 										<div class="men-cart-pro">
 											<div class="inner-men-cart-pro">
@@ -39,7 +41,7 @@
 
 								</div>
 								<div class="item-info-product ">
-									<h4><a href="single.html">{{ product.name }}</a></h4>
+                                    <span class="item_name"><h4><a href="{{ url_for('home.detail', product_id=product.id) }}">{{ product.name }}</a></h4></span>
 									<div class="info-product-price">
 										<span class="item_price">￥{{ product.price }}</span>
 									</div>
