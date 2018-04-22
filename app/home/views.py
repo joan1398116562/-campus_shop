@@ -359,10 +359,9 @@ def cart():
             cart_infos['price'] = price
             cart_infos['quality'] = quantity
             cart_infos['total'] = total
-            session['price'] = price
             product = Product.query.filter(Product.name == name).first()
             cart_info = CartInfo(quantity=quantity, product_name=name, cart_id=cart.id,
-                                 product_id=product.id, product_price=price)
+                                 product_id=product.id, product_price=price, total=total)
             db.session.add(cart_info)
 
             try:
@@ -389,7 +388,7 @@ def cart():
             # 得到当前session中登录的用户
             product = Product.query.filter(Product.name == name).first()
             cart_info = CartInfo(quantity=quantity, product_name=name, cart_id=cart.id,
-                                 product_id=product.id, product_price=price)
+                                 product_id=product.id, product_price=price, total=total)
             db.session.add(cart_info)
             try:
                 db.session.commit()
@@ -420,22 +419,44 @@ def order():
         for cartinfo in cartinfos:
 
             orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
-                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price)
+                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price, total=
+                                  cartinfo.total)
             db.session.add(orderinfo)
+            db.session.delete(cartinfo)
             try:
                 db.session.commit()
             except:
                 db.session.rollback()
-            order.subTotal = order.subTotal + orderinfo.product_price * orderinfo.quantity
+            order.subTotal = order.subTotal + orderinfo.total
+
+        cart = Cart.query.filter(Cart.user_id == user.id).first()
+
+        db.session.delete(cart)
+        db.session.commit()
+        orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
     else:
         cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
         for cartinfo in cartinfos:
             orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
-                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price)
+                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price,
+                                  total=cartinfo.total)
             db.session.add(orderinfo)
+            db.session.delete(cartinfo)
             try:
                 db.session.commit()
             except:
                 db.session.rollback()
-            order.subTotal = order.subTotal + orderinfo.product_price * orderinfo.quantity
-    return render_template('home/order.html', user=user)
+            order.subTotal = order.subTotal + orderinfo.total
+
+        cart = Cart.query.filter(Cart.user_id == user.id).first()
+
+        db.session.delete(cart)
+        db.session.commit()
+
+        orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
+    return render_template('home/order.html', user=user, order=order, orderinfos=orderinfos)
+
+
+@home.route('/order_manage/', methods=['GET', 'POST'])
+def order_manage():
+    return render_template('home/ordermanage.html')

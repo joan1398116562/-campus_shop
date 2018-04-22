@@ -178,7 +178,7 @@ class Order(db.Model):
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     # 订单状态   0 入库待存   1  待付款   2 已付款
     status = db.Column(db.Integer, default=0)
-    subTotal = db.Column(db.Float)
+    subTotal = db.Column(db.Float, default=0.0)
     # 订单详情信息关系关联
     orderinfo = db.relationship("OrderInfo", backref='order')
 
@@ -200,6 +200,8 @@ class OrderInfo(db.Model):
     product_price = db.Column(db.Float)
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    # 商品价格小计
+    total = db.Column(db.Float)
     order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 
