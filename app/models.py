@@ -148,13 +148,15 @@ class CartInfo(db.Model):
     """购物车详情表"""
     __tablename__ = 'cartinfo'
     # 购物车详情编号
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     # 商品数量
     quantity = db.Column(db.Integer)
     # 商品名字
     product_name = db.Column(db.String(100))
     # 商品价格
     product_price = db.Column(db.Float)
+    # 一栏小计
+    total = db.Column(db.Float)
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
 
@@ -174,6 +176,9 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     # 订单添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    # 订单状态   0 入库待存   1  待付款   2 已付款
+    status = db.Column(db.Integer, default=0)
+    subTotal = db.Column(db.Float)
     # 订单详情信息关系关联
     orderinfo = db.relationship("OrderInfo", backref='order')
 
@@ -184,18 +189,19 @@ class Order(db.Model):
 class OrderInfo(db.Model):
     """订单明细表"""
     __tablename__ = "orderinfo"
-    # 订单详情编号，和订单表编号一致
-    id = db.Column(db.Integer, db.ForeignKey('order.id'), primary_key=True)
-    # 含有商品
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
-    # 数量
+
+    # 订单详情编号
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
+    # 商品数量
     quantity = db.Column(db.Integer)
-    # 价格
-    price = db.Column(db.Float)
-    # 总计
-    total = db.Column(db.Float)
+    # 商品名字
+    product_name = db.Column(db.String(100))
+    # 商品价格
+    product_price = db.Column(db.Float)
     # 添加时间
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 
     def __repr__(self):
         return "<OrderInfo %r>" % self.id

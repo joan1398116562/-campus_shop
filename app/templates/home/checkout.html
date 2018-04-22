@@ -51,7 +51,7 @@
                       "itemPrice": itemPrice,
                       "itemQty": itemQty,
                       "itemTotal": itemTotal,
-                      "age": 1
+
                   })
               };
               $.ajax(
@@ -64,9 +64,9 @@
                       success: function (data) {
                           alert(JSON.stringify(data));
                           alert(data["itemTotal"]);
-                          /*if (data){
-                              window.location.href=""
-                          }*/
+                          if (data){
+                         window.location.href="{{ url_for('home.order') }}"}
+
                       },
                       error: function (XMLHttpRequest, textStatus, errorThrown) {
                           alert("请登录后再试");

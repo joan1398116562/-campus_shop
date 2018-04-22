@@ -1,12 +1,25 @@
-{% extends "home/base.html" %}
+{#{% extends "home/base.html" %}#}
+{#{% block content %}#}
+{#    {% include "home/menu.html" %}#}
+{##}
+{#{% endblock %}#}
+{#{% block js %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            $('#md-4').addClass("active");#}
+{#        });#}
+{#    </script>#}
+{#{% endblock %}#}
+{% extends 'home/base.html' %}
 {% block content %}
-    {% include "home/menu.html" %}
-
-{% endblock %}
-{% block js %}
-    <script>
-        $(document).ready(function () {
-            $('#md-4').addClass("active");
-        });
-    </script>
+    <div class="container">
+        <h3>选择收货地址</h3>
+        <hr>
+        <div class="col-md-4">
+            {{ user.name }}收
+            收货地址:
+            {{ user.address }}{{ user.location }}
+            {{ user.phone }}
+        </div>
+    </div>
 {% endblock %}

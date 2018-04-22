@@ -33,7 +33,7 @@
 							<div class="men-pro-item simpleCart_shelfItem">
 								<div class="men-thumb-item" style="border-top: 1px solid #FDA30E ;">
 									<img width="200" height="200" src="/static/{{ hot.pic }}" alt="" class="pro-image-front">
-									<img width="200" height="200" src="/static/{{ hot.pic }}" alt="" class="pro-image-back">
+									<img width="200" height="200" src="/static/{{ hot.pic }}" alt="" class="pro-image-back item_image">
 
 										<div class="men-cart-pro">
 											<div class="inner-men-cart-pro">
@@ -44,7 +44,7 @@
 
 								</div>
 								<div class="item-info-product ">
-									<h4><a href="single.html">{{ hot.name }}</a></h4>
+									<h4 class="item_name"><a href="{{ url_for('home.detail', product_id=hot.id) }}">{{ hot.name }}</a></h4>
 									<div class="info-product-price">
 										<span class="item_price">￥{{ hot.price }}</span>
 									</div>

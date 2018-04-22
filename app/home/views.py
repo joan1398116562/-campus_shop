@@ -225,6 +225,9 @@ def logout():
 
 @home.route("/", methods=['GET'])
 def index():
+    """
+    商品首页视图
+    """
     tags = Tag.query.all()
     total = Product.query.all()
     total = len(total)
@@ -239,6 +242,9 @@ def index():
 
 @home.route("/news/", methods=['GET'])
 def new_product():
+    """
+    新品视图
+    """
     page = request.args.get("page", 1, type=int)
     page_data = Product.query.order_by(Product.add_time.desc())
     page_data = page_data.paginate(page=page, per_page=8, error_out=False)
@@ -257,6 +263,9 @@ def all_product():
 
 @home.route("/hot_sale/", methods=['GET'])
 def hot_sale():
+    """
+    热销商品视图
+    """
     # hots = Product.query.order_by('sell desc').all()
     page = request.args.get("page", 1, type=int)
     page_data = Product.query.order_by(Product.sell.desc())
@@ -268,18 +277,27 @@ def hot_sale():
 
 @home.route('/detail/<product_id>/')
 def detail(product_id):
+    """
+    正常状态下商品详情视图
+    """
     product_model = Product.query.filter(Product.id == product_id).first()
     return render_template('home/detail.html', product=product_model)
 
 
 @home.route('/detail_onsale/<product_id>/')
 def detail_onsale(product_id):
+    """
+    活动状态下商品详情视图
+    """
     product_model = Product.query.filter(Product.id == product_id).first()
     return render_template('home/detail_onsale.html', product=product_model)
 
 
 @home.route('/category/<tag_id>/', methods=['GET'])
 def category(tag_id):
+    """
+    商品分类视图
+    """
     tag = Tag.query.filter(Tag.id == tag_id).first()
     product_cate = Product.query.join(Tag).filter(Tag.id == tag_id).all()
     return render_template('home/category.html', product_cate=product_cate, tag=tag)
@@ -324,90 +342,100 @@ def cart():
         cart = Cart.query.filter(Cart.user_id == user.id).first()
         if cart is None:
             cart = Cart(user_id=user.id)
+            db.session.add(cart)
+            db.session.commit()
             # 得到传来的json数据
             data = json.loads(request.form.get('data'))
             # 得到商品的名称
             name = data["itemName"]
-            age = data["age"]
             # 得到商品实际付的价格
             price = float(data["itemPrice"])
             # 得到商品的数量
             quantity = int(data["itemQty"])
             # 得到商品的总价
             total = data['itemTotal'].strip('￥')
-            print(name)
-            print(str(name))
             cart_infos = dict()
             cart_infos['name'] = name
-            cart_infos['age'] = age
             cart_infos['price'] = price
             cart_infos['quality'] = quantity
             cart_infos['total'] = total
             session['price'] = price
-            # 得到当前session中登录的用户
-            user = User.query.filter(User.id == session.get('user_id')).first()
             product = Product.query.filter(Product.name == name).first()
             cart_info = CartInfo(quantity=quantity, product_name=name, cart_id=cart.id,
                                  product_id=product.id, product_price=price)
-            # product = Product.query.filter(Product.name == str(name)).first()
-            # order = Order(user_id=user.id)
-            # orderinfo = OrderInfo(id=order.id, product_id=product.id)
-            # db.session.add(order)
-            # db.session.add(orderinfo)
             db.session.add(cart_info)
-            # db.session.add(cart_info)
+
             try:
                 db.session.commit()
             except:
                 db.session.rollback()
-            # order = Order.query.filter(user == user.name).first()
-            # order.orderinfo.quantity = cart_info['quality']
-            # order.orderinfo.total = cart_info['total']
+
         else:
             # 得到传来的json数据
             data = json.loads(request.form.get('data'))
             # 得到商品的名称
             name = data["itemName"]
-            age = data["age"]
             # 得到商品实际付的价格
             price = float(data["itemPrice"])
             # 得到商品的数量
             quantity = int(data["itemQty"])
             # 得到商品的总价
             total = data['itemTotal'].strip('￥')
-            print(name)
-            print(str(name))
             cart_infos = dict()
             cart_infos['name'] = name
-            cart_infos['age'] = age
             cart_infos['price'] = price
             cart_infos['quality'] = quantity
             cart_infos['total'] = total
-            session['price'] = price
             # 得到当前session中登录的用户
-            user = User.query.filter(User.id == session.get('user_id')).first()
             product = Product.query.filter(Product.name == name).first()
             cart_info = CartInfo(quantity=quantity, product_name=name, cart_id=cart.id,
                                  product_id=product.id, product_price=price)
-            # product = Product.query.filter(Product.name == str(name)).first()
-            # order = Order(user_id=user.id)
-            # orderinfo = OrderInfo(id=order.id, product_id=product.id)
-            # db.session.add(order)
-            # db.session.add(orderinfo)
             db.session.add(cart_info)
-            # db.session.add(cart_info)
             try:
                 db.session.commit()
             except:
                 db.session.rollback()
-            # order = Order.query.filter(user == user.name).first()
-            # order.orderinfo.quantity = cart_info['quality']
-            # order.orderinfo.total = cart_info['total']
+
         return jsonify(cart_infos)
-    # return render_template("home/cart.html")
 
 
 @home.route('/session_test/', methods=['GET'])
 def session_test():
         print(session.get('user_id'))
         return 'hello stranger'
+
+
+@home.route('/order/', methods=['GET', 'POST'])
+def order():
+    # 得到当前访问的订单所属用户
+    user = User.query.filter(User.id == session.get('user_id')).first()
+    order = Order.query.filter(Order.user_id == user.id).first()
+
+    if order is None:
+        order = Order(user_id=user.id, subTotal=0)
+        db.session.add(order)
+        db.session.commit()
+        cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+
+        for cartinfo in cartinfos:
+
+            orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
+                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price)
+            db.session.add(orderinfo)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+            order.subTotal = order.subTotal + orderinfo.product_price * orderinfo.quantity
+    else:
+        cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+        for cartinfo in cartinfos:
+            orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
+                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price)
+            db.session.add(orderinfo)
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+            order.subTotal = order.subTotal + orderinfo.product_price * orderinfo.quantity
+    return render_template('home/order.html', user=user)
