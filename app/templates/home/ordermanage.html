@@ -1,0 +1,153 @@
+{% extends "home/base.html" %}
+{% block content %}
+    <div class="container">
+    {% include "home/menu.html" %}
+    <div class="col-md-8">
+    <div class="product-easy">
+		<script src="{{ url_for('static', filename='base/js/easyResponsiveTabs.js') }}" type="text/javascript"></script>
+		<script type="text/javascript">
+							$(document).ready(function () {
+								$('#horizontalTab').easyResponsiveTabs({
+									type: 'default', //Types: default, vertical, accordion
+									width: 'auto', //auto or any width like 600px
+									fit: true   // 100% fit in a container
+								});
+							});
+
+		</script>
+		<div class="sap_tabs">
+			<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">
+				<ul class="resp-tabs-list">
+					<li class="resp-tab-item" aria-controls="tab_item-0" role="tab"><span>全部订单</span></li>
+					<li class="resp-tab-item" aria-controls="tab_item-1" role="tab"><span>已完成</span></li>
+					<li class="resp-tab-item" aria-controls="tab_item-2" role="tab"><span>未完成</span></li>
+				</ul>
+				<div class="resp-tabs-container">
+					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-0">
+                     <table class="table table-striped table-hover">
+                            {% for order in orders %}
+                                <tbody style="margin-top: 5em;">
+                                    <tr>
+                                        <th>{{ order.add_time }}</th>
+                                        <th>商品名称</th>
+                                        <th>商品数量</th>
+                                        <th>小计</th>
+                                        <th>总额</th>
+                                        <th>订单状态</th>
+                                    </tr>
+                                    {% for order_info in order_infos %}
+                                        {% if order_info.order_id == order.id %}
+                                        <tr>
+                                            {% for product in products %}
+                                                {% if product.id == order_info.product_id %}
+                                                <td><img src="/static/{{ product.pic }}" width="50px" height="50px"> </td>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <td>{{ order_info.product_name }}</td>
+                                            <td>{{ order_info.quantity }}</td>
+                                            <td>{{ order_info.total }}</td>
+
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td>{{ order.subTotal }}</td>
+                                    <td>{% if order.status == 0 %}
+                                        未付款
+                                        {% else %}
+                                        已付款
+                                        {% endif %}
+                                    </td>
+                                    </tr>
+                                </tbody>
+
+                            {% endfor %}
+                    </table>
+					</div>
+					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-1">
+						 <table class="table table-striped table-hover">
+                            {% for order_haspay in order_haspays %}
+                                <tbody style="margin-top: 5em;">
+                                    <tr>
+                                        <th>{{ order_haspay.add_time }}</th>
+                                        <th>商品名称</th>
+                                        <th>商品数量</th>
+                                        <th>小计</th>
+                                        <th>总额</th>
+                                        <th>订单状态</th>
+                                    </tr>
+                                    {% for order_info in order_infos %}
+                                        {% if order_info.order_id == order_haspay.id %}
+                                        <tr>
+                                            {% for product in products %}
+                                                {% if product.id == order_info.product_id %}
+                                                <td><img src="/static/{{ product.pic }}" width="50px" height="50px"> </td>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <td>{{ order_info.product_name }}</td>
+                                            <td>{{ order_info.quantity }}</td>
+                                            <td>{{ order_info.total }}</td>
+
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td>{{ order_haspay.subTotal }}</td>
+                                    </tr>
+
+                                </tbody>
+                            {% endfor %}
+                    </table>
+					</div>
+					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
+						 <table class="table table-striped table-hover">
+                            {% for order_nopay in order_nopays %}
+                                <tbody style="margin-top: 5em;">
+                                    <tr>
+                                        <th>{{ order_nopay.add_time }}</th>
+                                        <th>商品名称</th>
+                                        <th>商品数量</th>
+                                        <th>小计</th>
+                                        <th>总额</th>
+                                    </tr>
+                                    {% for order_info in order_infos %}
+                                        {% if order_info.order_id == order_nopay.id %}
+                                        <tr>
+                                            {% for product in products %}
+                                                {% if product.id == order_info.product_id %}
+                                                <td><img src="/static/{{ product.pic }}" width="50px" height="50px"> </td>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <td>{{ order_info.product_name }}</td>
+                                            <td>{{ order_info.quantity }}</td>
+                                            <td>{{ order_info.total }}</td>
+
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <td>{{ order_nopay.subTotal }}</td>
+                                    </tr>
+                                     </tbody>
+{#                                    <form action="{{ url_for('home.pay') }}" method="post">#}
+{#                                    <input type="hidden" name="order_id" value="{{ order_nopay.id }}">#}
+{#                                    <input type="hidden" name="order_subTotal" value="{{ order_nopay.subTotal }}">#}
+{#                                    <button class="btn btn-warning btn-lg" style="float: right">现在付款</button>#}
+{#                                    </form>#}
+                            {% endfor %}
+                    </table>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('#md-3').addClass("active");
+        });
+    </script>
+{% endblock %}

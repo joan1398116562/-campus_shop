@@ -2828,15 +2828,6 @@ td.invert-image a img {
 	font-size:14px;
 	color:#999;
 }
-.checkout-left-basket {
-    float: right;
-    width: 25%;
-    border: 1px solid #ccc;
-}
-.checkout-right-basket{
-	float: left;
-    margin: 8em 0 0 0em;
-}
 .checkout-left-basket ul li span {
     float: right;
 }

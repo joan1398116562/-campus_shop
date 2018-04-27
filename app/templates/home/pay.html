@@ -1,0 +1,14 @@
+{% extends 'home/base.html' %}
+{% block content %}
+<h2>你已经成功付款{{ order_subTotal }}元,稍等</h2>
+{% endblock %}
+{% block js %}
+    <script>
+    onload=function () {
+        setTimeout(go, 3000);
+    };
+    function go() {
+        location.href="{{ url_for('home.index') }}";
+    }
+    </script>
+{% endblock %}

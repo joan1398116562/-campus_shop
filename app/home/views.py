@@ -12,7 +12,7 @@ from decimal import Decimal, ROUND_CEILING
 from app import db, config
 from sqlalchemy import desc
 
-from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm, AdminLoginForm
+from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm
 
 from app.models import User, AdminUser, Userlog, Product, Tag, Order, OrderInfo, Cart, CartInfo
 
@@ -89,6 +89,22 @@ def login():
             db.session.commit()
             return redirect(url_for('home.user'))
         return render_template('home/login.html', form=form)
+
+
+@home.route('/pay/', methods=['GET', 'POST'])
+def pay():
+    order_id = request.form['order_id']
+    order_subTotal = request.form['order_subTotal']
+    order = Order.query.filter(Order.id == order_id).first()
+    order.status = 1
+    db.session.commit()
+    orderinfos = OrderInfo.query.filter(OrderInfo.order_id == order_id).all()
+    for orderinfo in orderinfos:
+        product = Product.query.filter(Product.id == orderinfo.product_id).first()
+        product.stock = product.stock - orderinfo.quantity
+        product.sell = product.sell + orderinfo.quantity
+        db.session.commit()
+    return render_template('home/pay.html', order_id=order_id, order_subTotal=order_subTotal)
 
 
 @home.route("/register/", methods=["GET", "POST"])
@@ -261,6 +277,25 @@ def all_product():
     return render_template("home/all_product.html", products=products, page_data=page_data, page=page)
 
 
+@home.route('/guess_like/', methods=['GET'])
+def guess_like():
+    """
+    商品推荐视图
+    """
+    page = request.args.get('page', 1, type=int)
+    if "user" not in session:
+        page_data = Product.query.order_by(Product.sell.desc())
+        page_data = page_data.paginate(page=page, per_page=8, error_out=False)
+        likes = page_data.items
+    else:
+        user = User.query.filter(User.id == session.get('user_id')).first()
+        orders = Order.query.filter(Order.user_id == user.id).all()
+        for order in orders:
+            orderinfos = OrderInfo.query.filter(OrderInfo.order_id == order.id).all()
+            for orderinfo in orderinfos:
+                product_count = Product.query.filter(Product.id == orderinfo.product_id).count()
+
+
 @home.route("/hot_sale/", methods=['GET'])
 def hot_sale():
     """
@@ -324,13 +359,6 @@ def checkout():
         购物车
     """
     return render_template('home/checkout.html')
-
-
-@home.route('/json/')
-def my_view():
-    data = [1, 'foo']
-    letters = ['a', 'b', 'c']
-    return render_template('home/json.html', data=map(json.dumps, data), letters=letters)
 
 
 @home.route('/cart/', methods=['POST'])
@@ -398,65 +426,72 @@ def cart():
         return jsonify(cart_infos)
 
 
-@home.route('/session_test/', methods=['GET'])
-def session_test():
-        print(session.get('user_id'))
-        return 'hello stranger'
-
-
 @home.route('/order/', methods=['GET', 'POST'])
 def order():
     # 得到当前访问的订单所属用户
     user = User.query.filter(User.id == session.get('user_id')).first()
     order = Order.query.filter(Order.user_id == user.id).first()
 
-    if order is None:
-        order = Order(user_id=user.id, subTotal=0)
-        db.session.add(order)
-        db.session.commit()
-        cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+    order = Order(user_id=user.id, subTotal=0)
+    db.session.add(order)
+    db.session.commit()
+    cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
 
-        for cartinfo in cartinfos:
+    for cartinfo in cartinfos:
 
-            orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
-                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price, total=
-                                  cartinfo.total)
-            db.session.add(orderinfo)
-            db.session.delete(cartinfo)
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
-            order.subTotal = order.subTotal + orderinfo.total
+        orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
+                              product_id=cartinfo.product_id, product_price=cartinfo.product_price, total=
+                              cartinfo.total)
+        db.session.add(orderinfo)
+        db.session.delete(cartinfo)
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+        order.subTotal = order.subTotal + orderinfo.total
 
-        cart = Cart.query.filter(Cart.user_id == user.id).first()
+    cart = Cart.query.filter(Cart.user_id == user.id).first()
 
-        db.session.delete(cart)
-        db.session.commit()
-        orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
-    else:
-        cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
-        for cartinfo in cartinfos:
-            orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
-                                  product_id=cartinfo.product_id, product_price=cartinfo.product_price,
-                                  total=cartinfo.total)
-            db.session.add(orderinfo)
-            db.session.delete(cartinfo)
-            try:
-                db.session.commit()
-            except:
-                db.session.rollback()
-            order.subTotal = order.subTotal + orderinfo.total
+    db.session.delete(cart)
+    db.session.commit()
+    # orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
+    orderinfos = OrderInfo.query.join(Order).filter(Order.id == order.id).all()
 
-        cart = Cart.query.filter(Cart.user_id == user.id).first()
-
-        db.session.delete(cart)
-        db.session.commit()
-
-        orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
+    # else:
+    #
+    #     cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+    #     for cartinfo in cartinfos:
+    #         orderinfo = OrderInfo(quantity=cartinfo.quantity, product_name=cartinfo.product_name, order_id=order.id,
+    #                               product_id=cartinfo.product_id, product_price=cartinfo.product_price,
+    #                               total=cartinfo.total)
+    #         db.session.add(orderinfo)
+    #         db.session.delete(cartinfo)
+    #         try:
+    #             db.session.commit()
+    #         except:
+    #             db.session.rollback()
+    #         order.subTotal = order.subTotal + orderinfo.total
+    #
+    #     cart = Cart.query.filter(Cart.user_id == user.id).first()
+    #
+    #     db.session.delete(cart)
+    #     db.session.commit()
+    #
+    #     orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
     return render_template('home/order.html', user=user, order=order, orderinfos=orderinfos)
 
 
 @home.route('/order_manage/', methods=['GET', 'POST'])
 def order_manage():
-    return render_template('home/ordermanage.html')
+    # 得到当前用户的信息
+    user = User.query.filter(User.id == session.get('user_id')).first()
+    # 得到所有订单的list
+    orders = Order.query.filter(Order.user_id == user.id).all()
+    order_infos = OrderInfo.query.all()
+    products = Product.query.all()
+    # 得到未付款订单的list
+    order_nopays = Order.query.filter(Order.user_id == user.id, Order.status == 0).all()
+    # 得到已付款订单的list
+    order_haspays = Order.query.filter(Order.user_id == user.id, Order.status == 1).all()
+    return render_template('home/ordermanage.html', orders=orders, order_infos=order_infos, products=products
+                           , order_nopays=order_nopays, order_haspays=order_haspays)
