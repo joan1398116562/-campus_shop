@@ -4,15 +4,11 @@
 import os
 import os.path as op
 
-import sys
-
-
-from flask_admin.model import BaseModelView
 from jinja2 import Markup
 
 from flask import Flask, render_template, url_for, redirect, request, abort, flash
 
-from wtforms import form, fields, validators
+from wtforms import form
 import flask_login as login
 import flask_admin as admin
 from flask_admin import Admin, form
@@ -20,8 +16,6 @@ from flask_admin.contrib import sqla
 from flask_admin import helpers as admin_helpers
 from flask_admin import expose
 from flask_babelex import Babel  # flask-admin的国际化
-
-from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy.event import listens_for
 
@@ -34,14 +28,17 @@ from home.forms import AdminLoginForm, RegistrationForm
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
 
+"""
+文件路径配置
+"""
 UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/uploads/")  # 上传文件路径
 CK_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static/base/ckeditor/ckeditor.js")
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])   # 允许上传的文件类型
 
 # file_path = op.join(op.dirname(__file__), 'static/uploads/products/')  # 商品文件上传路径
 file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "static")
 
-base_dir = os.path.dirname(__file__)
+base_dir = os.path.dirname(__file__)    # 当前项目根目录
 
 app = Flask(__name__)
 
@@ -54,12 +51,6 @@ app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN'  # 修改后台翻译为中文
 
 app.config.from_object('config')
 
-
-def product_root():
-    return file_path
-
-
-app.jinja_env.globals.update(product_root=product_root)
 
 """
 flask-login
@@ -168,6 +159,11 @@ flask-admin
 """
 
 
+"""
+CKeditor富文本编辑器的配置
+"""
+
+
 class CKTextAreaWidget(TextArea):
     def __call__(self, field, **kwargs):
         if kwargs.get('class'):
@@ -221,7 +217,7 @@ class ProductAdmin(sqla.ModelView):
         return login.current_user.is_authenticated
 
     column_display_pk = True
-    column_list = ('id', 'name', 'price', 'discount', 'iskilled', 'stock', 'sell', 'view_num', 'add_time', 'pic',
+    column_list = ('id', 'name', 'price', 'discount', 'isKilled', 'stock', 'sell', 'view_num', 'add_time', 'pic',
                    'description')
     column_labels = {
         'id': u'编号',
@@ -239,7 +235,7 @@ class ProductAdmin(sqla.ModelView):
         'comments': u'评论',
         'pic': u'图片',
     }
-    form_excluded_columns = ['comments', 'pic']
+    form_excluded_columns = ['comments', 'pic', 'cartinfos', 'true_price']
 
     column_filters = ('id', 'name', 'price', 'stock', 'sell', 'tag_id', 'view_num', 'discount', 'isKilled')
 
@@ -287,8 +283,6 @@ class ProductAdmin(sqla.ModelView):
                 flash("删除缩略图出错")
 
 
-
-
 class UserlogAdmin(sqla.ModelView):
     """
     用户登录日志视图
@@ -333,29 +327,29 @@ class TagAdmin(sqla.ModelView):
     column_searchable_list = ['name', 'add_time']
 
 
-class CommentAdmin(sqla.ModelView):
-    """
-    评论管理视图
-    """
-
-    def is_accessible(self):
-        return login.current_user.is_authenticated
-
-    can_delete = False
-    can_edit = False
-    can_create = False
-    column_labels = {
-        'id': u'编号',
-        'content': u'评论内容',
-        'product_id': u'所属商品',
-        'user_id': u'所属用户',
-        'add_time': u'添加时间',
-    }
-
-    column_filters = ('content', 'add_time', 'product_id')
-
-    column_searchable_list = ('content', 'add_time', 'product_id', 'user_id')
-
+# class CommentAdmin(sqla.ModelView):
+#     """
+#     评论管理视图
+#     """
+#
+#     def is_accessible(self):
+#         return login.current_user.is_authenticated
+#
+#     can_delete = False
+#     can_edit = False
+#     can_create = False
+#     column_labels = {
+#         'id': u'编号',
+#         'content': u'评论内容',
+#         'product_id': u'所属商品',
+#         'user_id': u'所属用户',
+#         'add_time': u'添加时间',
+#     }
+#
+#     column_filters = ('content', 'add_time', 'product_id')
+#
+#     column_searchable_list = ('content', 'add_time', 'product_id', 'user_id')
+#
 
 admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3', index_view=MyAdminIndexView(), base_template='my\
 _master.html')
@@ -365,7 +359,7 @@ admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
 admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户日志管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
 admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
-admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
+# admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
 
 
 # 开启调试模式

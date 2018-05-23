@@ -5,8 +5,6 @@ from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from werkzeug.security import check_password_hash
 
-
-
 # 实例化app
 appm = Flask(__name__)
 appm.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:177036@127.0.0.1:3306/shop"
@@ -251,15 +249,7 @@ class AdminUser(db.Model):
 
     def __repr__(self):
         return "<Administrator %r>" % self.name
-#
-# class ProductQuery(BaseQuery):
-#     def getproduct_id(self, id):
 
 
 if __name__ == '__main__':
     manager.run()
-
-
-
-
-

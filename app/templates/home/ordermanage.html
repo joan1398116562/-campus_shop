@@ -100,8 +100,9 @@
                     </table>
 					</div>
 					<div class="tab-1 resp-tab-content" aria-labelledby="tab_item-2">
+                        {% for order_nopay in order_nopays %}
 						 <table class="table table-striped table-hover">
-                            {% for order_nopay in order_nopays %}
+{#                            {% for order_nopay in order_nopays %}#}
                                 <tbody style="margin-top: 5em;">
                                     <tr>
                                         <th>{{ order_nopay.add_time }}</th>
@@ -122,20 +123,20 @@
                                             <td>{{ order_info.product_name }}</td>
                                             <td>{{ order_info.quantity }}</td>
                                             <td>{{ order_info.total }}</td>
-
                                         {% else %}
                                         {% endif %}
                                     {% endfor %}
                                     <td>{{ order_nopay.subTotal }}</td>
                                     </tr>
                                      </tbody>
-{#                                    <form action="{{ url_for('home.pay') }}" method="post">#}
-{#                                    <input type="hidden" name="order_id" value="{{ order_nopay.id }}">#}
-{#                                    <input type="hidden" name="order_subTotal" value="{{ order_nopay.subTotal }}">#}
-{#                                    <button class="btn btn-warning btn-lg" style="float: right">现在付款</button>#}
-{#                                    </form>#}
-                            {% endfor %}
+{#                            {% endfor %}#}
                     </table>
+                            <form action="{{ url_for('home.pay_to') }}" method="post">
+        <input type="hidden" name="order_id" value="{{ order_nopay.id }}">
+        <input type="hidden" name="order_subTotal" value="{{ order_nopay.subTotal }}">
+        <input type="submit" value="提交订单">
+    </form>
+                    {% endfor %}
 					</div>
 				</div>
 			</div>

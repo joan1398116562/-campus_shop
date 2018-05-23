@@ -14,7 +14,7 @@ from sqlalchemy import desc
 
 from home.forms import RegisterForm, LoginForm, UserForm, PasswordForm
 
-from app.models import User, AdminUser, Userlog, Product, Tag, Order, OrderInfo, Cart, CartInfo
+from app.models import User, AdminUser, Userlog, Product, Tag, Order, OrderInfo, Cart, CartInfo, Comment
 
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])  # 上传通过检查
@@ -97,6 +97,23 @@ def pay():
     order_subTotal = request.form['order_subTotal']
     order = Order.query.filter(Order.id == order_id).first()
     order.status = 1
+    db.session.commit()
+    orderinfos = OrderInfo.query.filter(OrderInfo.order_id == order_id).all()
+    for orderinfo in orderinfos:
+        product = Product.query.filter(Product.id == orderinfo.product_id).first()
+        product.stock = product.stock - orderinfo.quantity
+        product.sell = product.sell + orderinfo.quantity
+        db.session.commit()
+    return render_template('home/pay.html', order_id=order_id, order_subTotal=order_subTotal)
+
+
+@home.route('/pay_to/', methods=['GET', 'POST'])
+def pay_to():
+    order_id = request.form['order_id']
+    order_subTotal = request.form['order_subTotal']
+    order = Order.query.filter(Order.id == order_id).first()
+    order.status = 1
+    order.add_time = datetime.datetime.now()
     db.session.commit()
     orderinfos = OrderInfo.query.filter(OrderInfo.order_id == order_id).all()
     for orderinfo in orderinfos:
@@ -315,8 +332,9 @@ def detail(product_id):
     """
     正常状态下商品详情视图
     """
+    comments_num = Comment.query.join(Product).filter(Product.id == product_id).count()
     product_model = Product.query.filter(Product.id == product_id).first()
-    return render_template('home/detail.html', product=product_model)
+    return render_template('home/detail.html', product=product_model, comments_num=comments_num)
 
 
 @home.route('/detail_onsale/<product_id>/')
@@ -324,8 +342,12 @@ def detail_onsale(product_id):
     """
     活动状态下商品详情视图
     """
+    comments = Comment.query.join(Product).filter(Product.id == product_id).all()
+    users = User.query.all()
+    comments_num = Comment.query.join(Product).filter(Product.id == product_id).count()
     product_model = Product.query.filter(Product.id == product_id).first()
-    return render_template('home/detail_onsale.html', product=product_model)
+    return render_template('home/detail_onsale.html', product=product_model, comments_num=comments_num,
+                           comments=comments, users=users)
 
 
 @home.route('/category/<tag_id>/', methods=['GET'])
@@ -486,12 +508,12 @@ def order_manage():
     # 得到当前用户的信息
     user = User.query.filter(User.id == session.get('user_id')).first()
     # 得到所有订单的list
-    orders = Order.query.filter(Order.user_id == user.id).all()
+    orders = Order.query.filter(Order.user_id == user.id).order_by(Order.add_time.desc()).all()
     order_infos = OrderInfo.query.all()
     products = Product.query.all()
     # 得到未付款订单的list
-    order_nopays = Order.query.filter(Order.user_id == user.id, Order.status == 0).all()
+    order_nopays = Order.query.filter(Order.user_id == user.id, Order.status == 0).order_by(Order.add_time.desc()).all()
     # 得到已付款订单的list
-    order_haspays = Order.query.filter(Order.user_id == user.id, Order.status == 1).all()
+    order_haspays = Order.query.filter(Order.user_id == user.id, Order.status == 1).order_by(Order.add_time.desc()).all()
     return render_template('home/ordermanage.html', orders=orders, order_infos=order_infos, products=products
                            , order_nopays=order_nopays, order_haspays=order_haspays)
