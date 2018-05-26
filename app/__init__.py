@@ -22,7 +22,7 @@ from sqlalchemy.event import listens_for
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.models import db
-from models import User, Product, Tag, Comment, AdminUser, Userlog
+from models import User, Product, Tag, Comment, AdminUser, Userlog, Order, OrderInfo
 from home.forms import AdminLoginForm, RegistrationForm
 
 from wtforms import TextAreaField
@@ -327,29 +327,62 @@ class TagAdmin(sqla.ModelView):
     column_searchable_list = ['name', 'add_time']
 
 
-# class CommentAdmin(sqla.ModelView):
-#     """
-#     评论管理视图
-#     """
-#
-#     def is_accessible(self):
-#         return login.current_user.is_authenticated
-#
-#     can_delete = False
-#     can_edit = False
-#     can_create = False
-#     column_labels = {
-#         'id': u'编号',
-#         'content': u'评论内容',
-#         'product_id': u'所属商品',
-#         'user_id': u'所属用户',
-#         'add_time': u'添加时间',
-#     }
-#
-#     column_filters = ('content', 'add_time', 'product_id')
-#
-#     column_searchable_list = ('content', 'add_time', 'product_id', 'user_id')
-#
+class OrderAdmin(sqla.ModelView):
+    """
+    订单管理视图
+    """
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    can_create = False
+    can_edit = False
+
+    column_display_pk = True
+
+    column_list = ('id', 'status', 'subTotal', 'orderinfo', 'add_time')
+
+    column_labels = {
+        'id': u'订单编号',
+        'status': u'付款状态',
+        'subTotal': u'总价',
+        'orderinfo': u'订单详情库',
+        'add_time': u'添加时间',
+        'user_id': u'所属用户',
+        'user': u'所属用户'
+    }
+
+    column_filters = ('status', 'subTotal', 'add_time', 'user')
+
+
+class OrderInfoAdmin(sqla.ModelView):
+    """
+    订单管理视图
+    """
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    can_create = False
+    can_edit = False
+
+    column_display_pk = True
+
+    column_list = ('id', 'quantity', 'product_name', 'product_price', 'add_time',  'order_id', 'product_id')
+
+    column_labels = {
+        'id': u'订单详情编号',
+        'quantity': u'数量',
+        'product_name': u'商品名',
+        'product_price': u'商品价格',
+        'add_time': u'添加时间',
+        'order_id': u'所属订单Id',
+        'product_id': u'所属商品id',
+        'order': u'所属订单'
+    }
+
+    form_excluded_columns = ['total']
+
+    column_filters = ('product_name', 'product_price', 'add_time', 'order')
+
 
 admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3', index_view=MyAdminIndexView(), base_template='my\
 _master.html')
@@ -359,7 +392,8 @@ admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
 admin.add_view(UserlogAdmin(Userlog, db.session, name=u'用户日志管理'))
 admin.add_view(ProductAdmin(Product, db.session, name=u'商品管理'))
 admin.add_view(TagAdmin(Tag, db.session, name=u'标签管理'))
-# admin.add_view(CommentAdmin(Comment, db.session, name=u'评论管理'))
+admin.add_view(OrderAdmin(Order,  db.session, name=u'订单管理'))
+admin.add_view(OrderInfoAdmin(OrderInfo, db.session, name=u'订单详情管理'))
 
 
 # 开启调试模式
