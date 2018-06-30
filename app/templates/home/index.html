@@ -16,18 +16,22 @@
     <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
     <li data-target="#carousel-example-generic" data-slide-to="1"></li>
     <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="3"></li>
   </ol>
 
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="{{ url_for('static', filename='base/images/banner/banner01.png') }}" alt="...">
+      <img src="{{ url_for('static', filename='base/images/banner/可比克.png') }}" alt="...">
     </div>
     <div class="item">
-      <img src="{{ url_for('static', filename='base/images/banner/banner02.jpg') }}" alt="...">
+      <img src="{{ url_for('static', filename='base/images/banner/坚果.png') }}" alt="...">
     </div>
     <div class="item">
-      <img src="{{ url_for('static', filename='base/images/banner/banner03.png') }}" alt="...">
+      <img src="{{ url_for('static', filename='base/images/banner/多肉.jpg') }}" alt="...">
+    </div>
+      <div class="item">
+      <img src="{{ url_for('static', filename='base/images/banner/饼干.png') }}" alt="...">
     </div>
   </div>
 
@@ -100,7 +104,7 @@
                                         <span class="item_price" style="color:#fda30e;font-weight: bold;font-size: 28px">
                                             ￥{{ discount.true_price }}</span><del>￥{{ discount.price }}</del>
 									</div>
-									<a  class="item_add single-item hvr-outline-out button2">添加到购物车</a>
+									<a  class="item_add single-item hvr-outline-out button2 add_cart">添加到购物车</a>
 								</div>
 							</div>
 						</div>
@@ -151,7 +155,7 @@
                                             ￥1</span><del>￥{{ one_doller.price }}</del>
 
 									</div>
-									<a href="#" class="item_add single-item hvr-outline-out button2">现在抢购</a>
+									<a  class="item_add single-item hvr-outline-out button2 add_cart">现在抢购</a>
 								</div>
 							</div>
 						</div>

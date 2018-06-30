@@ -68,8 +68,8 @@
                     /*  contentType: 'application/json; charset=UTF-8', */
                       dataType: 'json',
                       success: function (data) {
-                          alert(JSON.stringify(data));
-                          alert(data["itemTotal"]);
+                          {#alert(JSON.stringify(data));#}
+                          {#alert(data["itemTotal"]);#}
                           if (data){
                          window.location.href="{{ url_for('home.order') }}"}
 

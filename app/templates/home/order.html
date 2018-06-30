@@ -11,8 +11,7 @@
                 <h4>收货地址:</h4><br>
             {{ user.address }}&nbsp;{{ user.location }}<br>
 
-                <h4>联系电话:</h4><br>
-            {{ user.phone }}
+                <h4 style="margin-top: 1em">联系电话:{{ user.phone }}</h4><br>
             </div>
     </div>
     </div>
@@ -48,7 +47,7 @@
         <input type="hidden" name="order_subTotal" value="{{ order.subTotal }}">
         <button class="btn btn-warning btn-lg" style="float: right">现在付款</button>
     </form>
-    <button class="btn btn-warning btn-lg" style="float: right"><a href="{{ url_for('home.order_manage')}}">暂时不要</a></button>
+    <button class="btn btn-warning btn-lg" style="float: right"><a href="{{ url_for('home.order_manage')}}" style="color:white">暂时不要</a></button>
     </div>
 {% endblock %}
 {% block js %}

@@ -457,7 +457,9 @@ def order():
     order = Order(user_id=user.id, subTotal=0)
     db.session.add(order)
     db.session.commit()
-    cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+    # cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == user.id).all()
+    cartinfos = CartInfo.query.join(Cart).filter(Cart.user_id == session.get('user_id')).all()
+    orderinfos = list()
 
     for cartinfo in cartinfos:
 
@@ -466,18 +468,22 @@ def order():
                               cartinfo.total)
         db.session.add(orderinfo)
         db.session.delete(cartinfo)
-        try:
-            db.session.commit()
-        except:
-            db.session.rollback()
+        # db.session.commit()
+        # try:
+        #     db.session.commit()
+        # except:
+        #     db.session.rollback()
         order.subTotal = order.subTotal + orderinfo.total
 
-    cart = Cart.query.filter(Cart.user_id == user.id).first()
 
-    db.session.delete(cart)
+    cart = Cart.query.filter(Cart.user_id == session.get('user_id')).first()
+
+    orderinfos = OrderInfo.query.join(Order).filter(Order.id == order.id).all()
+
+    # db.session.delete(cart)
     db.session.commit()
     # orderinfos = OrderInfo.query.join(Order).filter(Order.user_id == user.id).all()
-    orderinfos = OrderInfo.query.join(Order).filter(Order.id == order.id).all()
+    # orderinfos = OrderInfo.query.join(Order).filter(Order.id == order.id).all()
 
     # else:
     #

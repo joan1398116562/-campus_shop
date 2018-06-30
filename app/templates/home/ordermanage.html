@@ -1,4 +1,11 @@
 {% extends "home/base.html" %}
+{% block css %}
+    <style>
+        .product-easy{
+            padding: 0;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="container">
     {% include "home/menu.html" %}
@@ -134,7 +141,7 @@
                             <form action="{{ url_for('home.pay_to') }}" method="post">
         <input type="hidden" name="order_id" value="{{ order_nopay.id }}">
         <input type="hidden" name="order_subTotal" value="{{ order_nopay.subTotal }}">
-        <input type="submit" value="提交订单">
+        <input type="submit" value="提交订单" class="btn btn-warning">
     </form>
                     {% endfor %}
 					</div>

@@ -114,7 +114,7 @@
                                 <span class="sr-only">(current)</span></a></li>
                             <li class="menu__item"><a class="menu__link" href="{{ url_for('home.hot_sale') }}" style="margin-left: 1em
 ">热销</a></li>
-                            <li class="menu__item"><a class="menu__link"  href="electronics.html"><span class="menu--span">推荐</span></a></li>
+{#                            <li class="menu__item"><a class="menu__link"  href="electronics.html"><span class="menu--span">推荐</span></a></li>#}
                             <li class="menu__item"><a class="menu__link " href="{{ url_for('home.new_product') }}" onclick="good()"><span class="menu--span">新品</span></a></li>
                             <li class="menu__item"><a class="menu__link" href="{{ url_for('home.login') }}" onclick="good()"><span class="menu--span">登录</span></a></li>
                             <li class="menu__item"><a class="menu__link" href="{{ url_for('home.register') }}"><span class="menu--span">注册</span></a></li>
@@ -200,7 +200,11 @@
         alert(item.get("name") + "添加进购物车");
         添加购物车添加信息
     });*/
-
+    $(document).ready(function () {
+        $(".add_cart").click(function () {
+            alert("已经添加到购物车");
+        })
+    })
 </script>
 <!-- 底部结束 -->
 
