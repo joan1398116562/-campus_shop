@@ -385,7 +385,7 @@ class OrderInfoAdmin(sqla.ModelView):
 
 
 admin = Admin(app, name=u'校园商铺管理系统', template_mode='bootstrap3', index_view=MyAdminIndexView(), base_template='my\
-_master.html')
+_main.html')
 
 admin.add_view(MyModelView(AdminUser, db.session, name=u'管理员管理'))
 admin.add_view(UserAdmin(User, db.session, name=u'用户管理'))
